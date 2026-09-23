@@ -35,6 +35,7 @@ export default function Reader({
   const [theme, setTheme] = useState<'light' | 'sepia' | 'dark'>('light');
   const [saved, setSaved] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [overallProgress, setOverallProgress] = useState(0);
   const [userId, setUserId] = useState<string | null>(null);
   const [showSettings, setShowSettings] = useState(false);
   const [showContents, setShowContents] = useState(false);
@@ -45,7 +46,16 @@ export default function Reader({
       setUserId(uid);
       if (uid) {
         const { data: savedProgress } = await supabase.from('booknest_reading_progress').select('progress,chapter,position').eq('user_id', uid).eq('book_id', bookId).maybeSingle();
-        if (savedProgress && chapter === Number(savedProgress.chapter ?? 1)) setProgress(Number(savedProgress.progress ?? 0));
+        if (savedProgress) {
+          const savedOverall = Number(savedProgress.progress ?? 0);
+          setOverallProgress(Math.min(100, Math.max(0, savedOverall)));
+          if (chapter === Number(savedProgress.chapter ?? 1)) {
+            const chapterProgress = chapterCount > 1
+              ? Math.min(100, Math.max(0, (savedOverall * chapterCount) - ((chapter - 1) * 100)))
+              : savedOverall;
+            setProgress(chapterProgress);
+          }
+        }
       }
     });
 
@@ -89,10 +99,12 @@ export default function Reader({
       const doc = document.documentElement;
       const max = Math.max(1, doc.scrollHeight - window.innerHeight);
       const pct = Math.min(100, Math.max(0, (window.scrollY / max) * 100));
+      const overall = Math.min(100, Math.max(0, ((chapter - 1) + (pct / 100)) / Math.max(1, chapterCount) * 100));
       setProgress(pct);
+      setOverallProgress(overall);
       savePosition();
       if (userId) {
-        void supabase.from('booknest_reading_progress').upsert({ user_id: userId, book_id: bookId, progress: Number(pct.toFixed(2)), chapter, position: Math.round(window.scrollY), updated_at: new Date().toISOString() });
+        void supabase.from('booknest_reading_progress').upsert({ user_id: userId, book_id: bookId, progress: Number(overall.toFixed(2)), chapter, position: Math.round(window.scrollY), updated_at: new Date().toISOString() });
       }
     };
 
@@ -201,7 +213,7 @@ export default function Reader({
 
       <div className="readerProgressInfo">
         <span>Chapter {chapter} of {chapterCount}</span>
-        <strong>{Math.round(progress)}% read</strong>
+        <strong>{Math.round(overallProgress)}% read</strong>
       </div>
 
       <div className="readerLayout">
@@ -214,7 +226,7 @@ export default function Reader({
           </div>
           <div className="readerMenu">
             <span><List size={15}/> Chapter {chapter} of {chapterCount}</span>
-            <span>{Math.round(progress)}% through this chapter</span>
+            <span>{Math.round(progress)}% through this chapter</span><span>{Math.round(overallProgress)}% of book completed</span>
           </div>
         </aside>
 
