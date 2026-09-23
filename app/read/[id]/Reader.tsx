@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Bookmark, ChevronLeft, ChevronRight, Home, List, Moon, Sun, Type } from 'lucide-react';
 
@@ -37,7 +37,7 @@ export default function Reader({
 
     const restore = () => {
       const y = Number(localStorage.getItem(storageKey) || 0);
-      if (y > 0) window.scrollTo({ top: y, behavior: 'instant' as ScrollBehavior });
+      if (y > 0) window.scrollTo(0, y);
     };
     setTimeout(restore, 120);
   }, [bookId, chapter, storageKey]);
@@ -54,7 +54,7 @@ export default function Reader({
     return () => window.removeEventListener('scroll', onScroll);
   }, [storageKey]);
 
-  const bodyClass = useMemo(() => `reader reader-${theme}`, [theme]);
+  const bodyClass = `reader reader-${theme}`;
 
   function changeFont(delta: number) {
     const next = Math.min(25, Math.max(16, fontSize + delta));
