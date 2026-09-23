@@ -30,7 +30,8 @@ export default function LibraryPage() {
       .from('booknest_library')
       .select('book_id,created_at,booknest_books(id,title,author,cover_url,description,publication_year)')
       .order('created_at', { ascending: false });
-    setRows((data ?? []) as Row[]);
+    const normalized = (data ?? []).map((row: any) => ({ ...row, booknest_books: Array.isArray(row.booknest_books) ? (row.booknest_books[0] ?? null) : row.booknest_books }));
+    setRows(normalized as Row[]);
     setLoading(false);
   }
 
