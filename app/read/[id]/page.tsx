@@ -81,9 +81,9 @@ function cleanExternalHtml(html: string, baseUrl?: string) {
     .replace(commentPattern, '');
 
   if (baseUrl) {
-    cleaned = cleaned.replace(imagePattern, (_match, prefix, src, suffix) => {
+    cleaned = cleaned.replace(imagePattern, (_match, src) => {
       try {
-        return prefix + new URL(src, baseUrl).toString() + suffix;
+        return `src="${new URL(src, baseUrl).toString()}"`;
       } catch {
         return _match;
       }
