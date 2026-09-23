@@ -21,15 +21,14 @@ function getSourceId(book: { source_url: string | null }) {
 }
 
 function extractBody(html: string) {
-  const body = html.match(/<body[^>]*>([\\s\\S]*?)<\\/body>/i)?.[1] ?? html;
-  return body
-    .replace(/<script[\\s\\S]*?<\\/script>/gi, '')
-    .replace(/<style[\\s\\S]*?<\\/style>/gi, '');
+  const bodyMatch = html.match(/<body[^>]*>([\\s\\S]*?)<\\/body>/i);
+  const body = bodyMatch?.[1] ?? html;
+  return body.replace(/<script[\\s\\S]*?<\\/script>/gi, '').replace(/<style[\\s\\S]*?<\\/style>/gi, '');
 }
 
 function labelFromFile(file: string, index: number) {
   if (file.startsWith('chapter-')) return `Chapter ${index + 1}`;
-  return file.replace('.xhtml', '').replace(/-/g, ' ').replace(/\\b\\w/g, c => c.toUpperCase());
+  return file.replace('.xhtml', '').replace(/-/g, ' ');
 }
 
 export default async function ReadPage({
@@ -56,7 +55,7 @@ export default async function ReadPage({
   const chapter = Number.isFinite(requested) ? Math.min(source.chapters.length, Math.max(1, Math.floor(requested))) : 1;
   const file = source.chapters[chapter - 1];
   const rawUrl = `https://raw.githubusercontent.com/${source.repo}/master/src/epub/text/${file}`;
-  const response = await fetch(rawUrl, { next: { revalidate: 86400 } });
+  const response = await fetch(rawUrl);
 
   if (!response.ok) {
     if (book.read_url) redirect(book.read_url);
