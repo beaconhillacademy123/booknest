@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Bookmark, ChevronLeft, ChevronRight, Home, List, Moon, Sun } from 'lucide-react';
+import { Bookmark, ChevronLeft, ChevronRight, Home, List, Moon, Sun, Settings2, BookOpen } from 'lucide-react';
 import { supabase } from '../../../lib/supabase-browser';
 
 type Props = {
@@ -28,6 +28,7 @@ export default function Reader({
   const [saved, setSaved] = useState(false);
   const [progress, setProgress] = useState(0);
   const [userId, setUserId] = useState<string | null>(null);
+  const [showSettings, setShowSettings] = useState(false);
 
   useEffect(() => {
     supabase.auth.getSession().then(async ({ data }) => {
@@ -114,13 +115,26 @@ export default function Reader({
         <div className="readerTitle"><strong>{title}</strong><small>{author}</small></div>
 
         <div className="readerTools">
+          <button onClick={() => setShowSettings(v => !v)} aria-label="Reader settings" title="Reader settings"><Settings2 size={18}/></button>
           <button onClick={() => changeFont(-1)} aria-label="Decrease text size" title="Smaller text"><span className="fontButton">A−</span></button>
           <button onClick={() => changeFont(1)} aria-label="Increase text size" title="Larger text"><span className="fontButton">A+</span></button>
           <span className="fontSizeBadge">{fontSize}px</span>
-          <button onClick={() => changeTheme(theme === 'dark' ? 'light' : 'dark')} aria-label="Toggle dark mode">{theme === 'dark' ? <Sun size={18}/> : <Moon size={18}/>}</button>
+          <button onClick={() => changeTheme(theme === 'dark' ? 'light' : theme === 'light' ? 'sepia' : 'dark')} aria-label="Change reading theme">{theme === 'dark' ? <Sun size={18}/> : <Moon size={18}/>}</button>
           <button className={saved ? 'readerSaved' : ''} onClick={toggleBookmark} aria-label="Bookmark chapter" title="Bookmark chapter"><Bookmark size={18} fill={saved ? 'currentColor' : 'none'}/></button>
         </div>
       </header>
+
+      {showSettings && <div className="readerSettings">
+        <div><strong>Reading settings</strong><button onClick={() => setShowSettings(false)}>×</button></div>
+        <label>Text size <span>{fontSize}px</span></label>
+        <div className="readerSettingRow"><button onClick={() => changeFont(-1)}>A−</button><button onClick={() => changeFont(1)}>A+</button></div>
+        <label>Page theme</label>
+        <div className="readerThemes">
+          <button className={theme === 'light' ? 'active' : ''} onClick={() => changeTheme('light')}>Light</button>
+          <button className={theme === 'sepia' ? 'active' : ''} onClick={() => changeTheme('sepia')}>Sepia</button>
+          <button className={theme === 'dark' ? 'active' : ''} onClick={() => changeTheme('dark')}>Dark</button>
+        </div>
+      </div>}
 
       <div className="readerProgressInfo">
         <span>Chapter {chapter} of {chapterCount}</span>
