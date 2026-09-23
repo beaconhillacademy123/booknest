@@ -15,6 +15,36 @@ const SOURCES: Record<string, ReaderSource> = {
   '2701': { repo: 'standardebooks/herman-melville_moby-dick', chapters: Array.from({ length: 135 }, (_, i) => `chapter-${i + 1}.xhtml`) }
 };
 
+const DRACULA_CHAPTER_LABELS = [
+  "Jonathan Harker's Journal",
+  "Jonathan Harker's Journal — continued",
+  "Jonathan Harker's Journal — continued",
+  "Jonathan Harker's Journal — continued",
+  "Letter from Miss Mina Murray to Miss Lucy Westenra",
+  "Mina Murray's Journal",
+  "Cutting from “The Dailygraph,” 8 August",
+  "Mina Murray's Journal",
+  "Letter, Mina Harker to Lucy Westenra",
+  "Letter, Dr. Seward to the Hon. Arthur Holmwood",
+  "Lucy Westenra's Diary",
+  "Dr. Seward's Diary",
+  "Dr. Seward's Diary — continued",
+  "Mina Harker's Journal",
+  "Dr. Seward's Diary — continued",
+  "Dr. Seward's Diary — continued",
+  "Dr. Seward's Diary — continued",
+  "Dr. Seward's Diary",
+  "Jonathan Harker's Journal",
+  "Jonathan Harker's Journal",
+  "Dr. Seward's Diary",
+  "Jonathan Harker's Journal",
+  "Dr. Seward's Diary",
+  "Dr. Seward's Phonograph Diary, spoken by Van Helsing",
+  "Dr. Seward's Diary",
+  "Dr. Seward's Diary",
+  "Mina Harker's Journal"
+];
+
 function getSourceId(book: { source_url: string | null }) {
   const match = book.source_url?.match(/\/ebooks\/(\d+)/);
   return match?.[1] ?? null;
@@ -32,6 +62,11 @@ function extractBody(html: string) {
 function labelFromFile(file: string, index: number) {
   if (file.startsWith('chapter-')) return `Chapter ${index + 1}`;
   return file.replace('.xhtml', '').replace(/-/g, ' ');
+}
+
+function chapterLabel(sourceId: string | null, file: string, index: number) {
+  if (sourceId === '345') return DRACULA_CHAPTER_LABELS[index] ?? `Chapter ${index + 1}`;
+  return labelFromFile(file, index);
 }
 
 function cleanExternalHtml(html: string) {
@@ -85,6 +120,7 @@ export default async function ReadPage({
       chapter={1}
       chapterCount={1}
       chapterLabel="Full book"
+      chapterItems={[{ number: 1, label: 'Full book', href: `/read/${id}` }]}
       content={content}
       sourceUrl={book.source_url}
     />;
@@ -105,6 +141,11 @@ export default async function ReadPage({
   const base = `/read/${id}`;
   const prevHref = chapter > 1 ? `${base}?chapter=${chapter - 1}` : undefined;
   const nextHref = chapter < source.chapters.length ? `${base}?chapter=${chapter + 1}` : undefined;
+  const chapterItems = source.chapters.map((chapterFile, index) => ({
+    number: index + 1,
+    label: chapterLabel(sourceId, chapterFile, index),
+    href: `${base}?chapter=${index + 1}`
+  }));
 
   return <Reader
     bookId={id}
@@ -113,7 +154,8 @@ export default async function ReadPage({
     coverUrl={book.cover_url}
     chapter={chapter}
     chapterCount={source.chapters.length}
-    chapterLabel={labelFromFile(file, chapter - 1)}
+    chapterLabel={chapterLabel(sourceId, file, chapter - 1)}
+    chapterItems={chapterItems}
     content={content}
     sourceUrl={book.source_url}
     prevHref={prevHref}
