@@ -1,6 +1,6 @@
-# BookNest V2
+# M King Reads V2
 
-BookNest is a free digital library prototype powered by Next.js and Supabase.
+M King Reads is a free digital library prototype powered by Next.js and Supabase.
 
 ## Current features
 - Live genre catalogue from Supabase
