@@ -10,7 +10,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ q
 
   return <main>
     <header className="topbar">
-      <Link href="/" className="brand"><div className="logo"><BookOpen size={22}/></div><span>BookNest</span></Link>
+      <Link href="/" className="brand"><div className="logo"><BookOpen size={22}/></div><span>M King Reads</span></Link>
       <nav><Link className="active" href="/">Home</Link><Link href="/#genres">Genres</Link><Link href="/library">My Library</Link></nav>
       <Link href="/login" className="login">Log in</Link>
     </header>
@@ -34,10 +34,10 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ q
         const genre = getGenre(b);
         return <article className="book" key={b.id}>
           <Link href={`/book/${b.id}`} className="cover" style={{backgroundImage:b.cover_url ? `url("${b.cover_url}")` : undefined}}><span>{genre?.name ?? 'Free book'}</span></Link>
-          <div className="bookInfo"><Link href={`/book/${b.id}`}><h3>{b.title}</h3></Link><p className="author">{b.author}</p><p>{b.description ?? 'A free book available through BookNest.'}</p><div className="actions"><Link className="read" href={`/book/${b.id}`}>View book</Link><SaveBookButton bookId={b.id} /></div></div>
+          <div className="bookInfo"><Link href={`/book/${b.id}`}><h3>{b.title}</h3></Link><p className="author">{b.author}</p><p>{b.description ?? 'A free book available through M King Reads.'}</p><div className="actions"><Link className="read" href={`/book/${b.id}`}>View book</Link><SaveBookButton bookId={b.id} /></div></div>
         </article>;
       })}</div>}
     </section>
-    <footer><div className="brand"><div className="logo"><BookOpen size={19}/></div><span>BookNest</span></div><p>A free digital library for curious minds.</p></footer>
+    <footer><div className="brand"><div className="logo"><BookOpen size={19}/></div><span>M King Reads</span></div><p>A free digital library for curious minds.</p></footer>
   </main>
 }
