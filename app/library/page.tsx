@@ -64,7 +64,7 @@ export default function LibraryPage() {
       <div className="libraryHeaderActions"><span className="libraryEmail">{email}</span><button className="logoutButton" onClick={logout}><LogOut size={15}/> Log out</button></div>
     </header>
     <section className="section libraryPage">
-      <div className="sectionHead"><div><h2>My Library</h2><p>Books you have saved to your personal shelf.</p></div><Link className="secondary libraryBrowse" href="/">Browse books</Link></div>
+      <div className="sectionHead libraryHero"><div><h2>My Library</h2><p>Your personal shelf — pick up where you left off.</p><div className="libraryStats"><div className="libraryStat"><strong>{rows.length}</strong><span>Saved books</span></div><div className="libraryStat"><strong>{rows.filter(r => r.progress && Number(r.progress.progress) > 0).length}</strong><span>In progress</span></div><div className="libraryStat"><strong>{rows.filter(r => r.progress && Number(r.progress.progress) >= 100).length}</strong><span>Completed</span></div></div></div><Link className="secondary libraryBrowse" href="/">Browse books</Link></div>
       {loading ? <div className="empty">Loading your library...</div> : rows.length === 0 ? <div className="libraryEmpty"><BookOpen size={38}/><h3>Your shelf is empty.</h3><p>Save a book while browsing and it will appear here.</p><Link className="read" href="/">Find a book</Link></div> : <div className="books">{rows.map(row => {
         const b=row.booknest_books;
         if (!b) return null;
