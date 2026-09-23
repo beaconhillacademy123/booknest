@@ -61,7 +61,7 @@ export default function LibraryPage() {
   return <main>
     <header className="topbar">
       <Link href="/" className="brand"><div className="logo"><BookOpen size={22}/></div><span>M King Reads</span></Link>
-      <div className="libraryHeaderActions"><span className="libraryEmail">{email}</span><button className="logoutButton" onClick={logout}><LogOut size={15}/> Log out</button></div>
+      <div className="libraryHeaderActions"><span className="libraryEmail">{email}</span><Link className="secondary" href="/profile">Account</Link><button className="logoutButton" onClick={logout}><LogOut size={15}/> Log out</button></div>
     </header>
     <section className="section libraryPage">
       <div className="sectionHead libraryHero"><div><h2>My Library</h2><p>Your personal shelf — pick up where you left off.</p><div className="libraryStats"><div className="libraryStat"><strong>{rows.length}</strong><span>Saved books</span></div><div className="libraryStat"><strong>{rows.filter(r => r.progress && Number(r.progress.progress) > 0).length}</strong><span>In progress</span></div><div className="libraryStat"><strong>{rows.filter(r => r.progress && Number(r.progress.progress) >= 100).length}</strong><span>Completed</span></div></div></div><Link className="secondary libraryBrowse" href="/">Browse books</Link></div>
