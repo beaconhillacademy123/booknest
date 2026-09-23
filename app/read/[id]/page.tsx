@@ -38,9 +38,8 @@ function cleanExternalHtml(html: string) {
   return html
     .replace(/<script[\\s\\S]*?<\\/script>/gi, '')
     .replace(/<style[\\s\\S]*?<\\/style>/gi, '')
-    .replace(/<!--([\\s\\S]*?)-->/g, '');
+    .replace(/<!--[\\s\\S]*?-->/g, '');
 }
-
 export default async function ReadPage({
   params,
   searchParams
