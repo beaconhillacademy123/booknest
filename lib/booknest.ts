@@ -38,3 +38,9 @@ export async function searchBooks(query: string, limit = 50) {
 export function getGenre(book: Book) {
   return Array.isArray(book.booknest_genres) ? book.booknest_genres[0] : book.booknest_genres;
 }
+export async function getSimilarBooks(book: Book, limit = 4) {
+  const genre = getGenre(book);
+  if (!genre) return [];
+  const books = await getBooksByGenre(genre.slug, limit + 1);
+  return books.books.filter(b => b.id !== book.id).slice(0, limit);
+}
