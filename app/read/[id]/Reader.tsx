@@ -29,6 +29,7 @@ export default function Reader({
   const [progress, setProgress] = useState(0);
   const [userId, setUserId] = useState<string | null>(null);
   const [showSettings, setShowSettings] = useState(false);
+  const [showContents, setShowContents] = useState(false);
 
   useEffect(() => {
     supabase.auth.getSession().then(async ({ data }) => {
@@ -115,6 +116,7 @@ export default function Reader({
         <div className="readerTitle"><strong>{title}</strong><small>{author}</small></div>
 
         <div className="readerTools">
+          <button onClick={() => setShowContents(v => !v)} aria-label="Table of contents" title="Table of contents"><List size={18}/></button>
           <button onClick={() => setShowSettings(v => !v)} aria-label="Reader settings" title="Reader settings"><Settings2 size={18}/></button>
           <button onClick={() => changeFont(-1)} aria-label="Decrease text size" title="Smaller text"><span className="fontButton">A−</span></button>
           <button onClick={() => changeFont(1)} aria-label="Increase text size" title="Larger text"><span className="fontButton">A+</span></button>
@@ -123,6 +125,12 @@ export default function Reader({
           <button className={saved ? 'readerSaved' : ''} onClick={toggleBookmark} aria-label="Bookmark chapter" title="Bookmark chapter"><Bookmark size={18} fill={saved ? 'currentColor' : 'none'}/></button>
         </div>
       </header>
+
+      {showContents && <div className="readerContents">
+        <div><strong>Table of contents</strong><button onClick={() => setShowContents(false)}>×</button></div>
+        <p>Chapter {chapter} of {chapterCount}</p>
+        <div className="readerContentsNav">{prevHref && <Link href={prevHref}>← Previous chapter</Link>}{nextHref && <Link href={nextHref}>Next chapter →</Link>}</div>
+      </div>}
 
       {showSettings && <div className="readerSettings">
         <div><strong>Reading settings</strong><button onClick={() => setShowSettings(false)}>×</button></div>
