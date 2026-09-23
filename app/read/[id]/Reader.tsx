@@ -34,8 +34,8 @@ export default function Reader({
       const uid = data.session?.user.id ?? null;
       setUserId(uid);
       if (uid) {
-        const { data: savedProgress } = await supabase.from('booknest_reading_progress').select('progress').eq('user_id', uid).eq('book_id', bookId).maybeSingle();
-        if (savedProgress && chapter === 1) setProgress(Number(savedProgress.progress ?? 0));
+        const { data: savedProgress } = await supabase.from('booknest_reading_progress').select('progress,chapter,position').eq('user_id', uid).eq('book_id', bookId).maybeSingle();
+        if (savedProgress && chapter === Number(savedProgress.chapter ?? 1)) setProgress(Number(savedProgress.progress ?? 0));
       }
     });
 
@@ -61,7 +61,7 @@ export default function Reader({
       setProgress(pct);
       localStorage.setItem(storageKey, String(Math.round(window.scrollY)));
       if (userId) {
-        void supabase.from('booknest_reading_progress').upsert({ user_id: userId, book_id: bookId, progress: Number(pct.toFixed(2)), updated_at: new Date().toISOString() });
+        void supabase.from('booknest_reading_progress').upsert({ user_id: userId, book_id: bookId, progress: Number(pct.toFixed(2)), chapter, position: Math.round(window.scrollY), updated_at: new Date().toISOString() });
       }
     };
 
