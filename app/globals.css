@@ -181,3 +181,12 @@ a{text-decoration:none;color:inherit}.sectionHead a,.back{display:flex;align-ite
 
 .cardGenre{display:inline-flex;align-items:center;width:max-content;max-width:100%;padding:5px 9px;border-radius:999px;background:#f1ede5;color:#5d4a2e;font-size:10px;font-weight:800;margin-bottom:8px}
 .bookNew .cover{border-bottom:1px solid #eee9df}
+
+.readerSettings{position:fixed;right:4vw;top:76px;width:260px;background:var(--reader-bg);color:var(--reader-text);border:1px solid var(--reader-border);border-radius:16px;padding:16px;box-shadow:0 18px 45px #0003;z-index:25}
+.readerSettings>div:first-child{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.readerSettings>div:first-child button{border:0;background:transparent;color:inherit;font-size:22px;cursor:pointer}
+.readerSettings label{display:flex;justify-content:space-between;font-size:12px;font-weight:800;color:var(--reader-muted);margin:12px 0 7px}
+.readerSettingRow,.readerThemes{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.readerSettingRow button,.readerThemes button{border:1px solid var(--reader-border);background:transparent;color:inherit;border-radius:9px;padding:9px;font-weight:700;cursor:pointer}
+.readerThemes .active{background:#a8782e;color:#fff;border-color:#a8782e}
+@media(max-width:850px){.readerSettings{right:16px;top:76px;width:250px}}
