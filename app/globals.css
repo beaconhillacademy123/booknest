@@ -205,3 +205,21 @@ a{text-decoration:none;color:inherit}.sectionHead a,.back{display:flex;align-ite
 .readerContents{position:fixed;left:4vw;top:76px;width:260px;background:var(--reader-bg);color:var(--reader-text);border:1px solid var(--reader-border);border-radius:16px;padding:16px;box-shadow:0 18px 45px #0003;z-index:25}
 .readerContents>div:first-child{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.readerContents>div:first-child button{border:0;background:transparent;color:inherit;font-size:22px;cursor:pointer}.readerContents p{font-size:12px;color:var(--reader-muted);margin:0 0 14px}.readerContentsNav{display:flex;flex-direction:column;gap:8px}.readerContentsNav a{padding:9px 10px;border:1px solid var(--reader-border);border-radius:9px;font-size:12px;font-weight:700}
 @media(max-width:850px){.readerContents{left:16px;right:16px;width:auto}}
+
+/* Reader table of contents upgrade */
+.readerContents{width:min(360px,calc(100vw - 32px));max-height:min(78vh,680px);overflow:hidden;display:flex;flex-direction:column}
+.readerContentsHeader{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex:0 0 auto}
+.readerContentsHeader button{border:0;background:transparent;color:inherit;font-size:22px;cursor:pointer}
+.readerContentsCount{font-size:12px;color:var(--reader-muted);margin:0 0 10px;flex:0 0 auto}
+.readerChapterList{display:flex;flex-direction:column;gap:4px;overflow-y:auto;padding-right:4px;min-height:0;scrollbar-width:thin}
+.readerChapterList a{display:grid;grid-template-columns:30px 1fr;gap:8px;align-items:start;padding:9px 10px;border:1px solid transparent;border-radius:9px;font-size:12px;line-height:1.35}
+.readerChapterList a span{color:var(--reader-muted);font-weight:800}
+.readerChapterList a strong{font-weight:700}
+.readerChapterList a:hover{background:color-mix(in srgb,var(--reader-border) 35%,transparent)}
+.readerChapterList a.current{background:#a8782e;color:#fff;border-color:#a8782e}
+.readerChapterList a.current span{color:#fff}
+.readerContentsNav{flex:0 0 auto;margin-top:10px;padding-top:10px;border-top:1px solid var(--reader-border)}
+@media(max-width:850px){
+  .readerContents{top:74px;max-height:calc(100vh - 92px);width:auto}
+  .readerChapterList a{padding:10px}
+}
