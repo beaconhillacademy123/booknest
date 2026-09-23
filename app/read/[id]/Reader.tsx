@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Bookmark, ChevronLeft, ChevronRight, Home, List, Moon, Sun, Settings2, BookOpen } from 'lucide-react';
+import { Bookmark, ChevronLeft, ChevronRight, Home, List, Settings2 } from 'lucide-react';
 import { supabase } from '../../../lib/supabase-browser';
 
 type Props = {
@@ -118,10 +118,6 @@ export default function Reader({
         <div className="readerTools">
           <button onClick={() => setShowContents(v => !v)} aria-label="Table of contents" title="Table of contents"><List size={18}/></button>
           <button onClick={() => setShowSettings(v => !v)} aria-label="Reader settings" title="Reader settings"><Settings2 size={18}/></button>
-          <button onClick={() => changeFont(-1)} aria-label="Decrease text size" title="Smaller text"><span className="fontButton">A−</span></button>
-          <button onClick={() => changeFont(1)} aria-label="Increase text size" title="Larger text"><span className="fontButton">A+</span></button>
-          <span className="fontSizeBadge">{fontSize}px</span>
-          <button onClick={() => changeTheme(theme === 'dark' ? 'light' : theme === 'light' ? 'sepia' : 'dark')} aria-label="Change reading theme">{theme === 'dark' ? <Sun size={18}/> : <Moon size={18}/>}</button>
           <button className={saved ? 'readerSaved' : ''} onClick={toggleBookmark} aria-label="Bookmark chapter" title="Bookmark chapter"><Bookmark size={18} fill={saved ? 'currentColor' : 'none'}/></button>
         </div>
       </header>
