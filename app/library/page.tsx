@@ -12,6 +12,11 @@ type Row = {
     id: string; title: string; author: string | null; cover_url: string | null;
     description: string | null; publication_year: number | null;
   } | null;
+  progress: {
+    progress: number;
+    chapter: number;
+    position: number;
+  } | null;
 };
 
 export default function LibraryPage() {
