@@ -89,7 +89,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ q
 function BookCard({book}: {book: any}) {
   const genre = getGenre(book);
   return <article className="book bookNew">
-    <Link href={`/book/${book.id}`} className="cover" style={{backgroundImage:book.cover_url ? `url("${book.cover_url}")` : undefined}}><span>{genre?.name ?? 'Free book'}</span></Link>
-    <div className="bookInfo"><Link href={`/book/${book.id}`}><h3>{book.title}</h3></Link><p className="author">{book.author}</p><p>{book.description ?? 'A free book available through M King Reads.'}</p><div className="actions"><Link className="read" href={`/book/${book.id}`}>View book</Link><SaveBookButton bookId={book.id} /></div></div>
+    <Link href={`/book/${book.id}`} className="cover" style={{backgroundImage:book.cover_url ? `url("${book.cover_url}")` : undefined}} aria-label={book.title} />
+    <div className="bookInfo"><span className="cardGenre">{genre?.icon} {genre?.name ?? 'Free book'}</span><Link href={`/book/${book.id}`}><h3>{book.title}</h3></Link><p className="author">{book.author}</p><p>{book.description ?? 'A free book available through M King Reads.'}</p><div className="actions"><Link className="read" href={`/book/${book.id}`}>View book</Link><SaveBookButton bookId={book.id} /></div></div>
   </article>;
 }
