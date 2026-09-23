@@ -1,5 +1,6 @@
 import Link from 'next/link';
-import { BookOpen, Search, Bookmark, Sparkles, ChevronRight } from 'lucide-react';
+import { BookOpen, Search, Sparkles, ChevronRight } from 'lucide-react';
+import SaveBookButton from './components/SaveBookButton';
 import { getBooks, getGenres, getGenre, searchBooks } from '../lib/booknest';
 
 export default async function Home({ searchParams }: { searchParams: Promise<{ q?: string }> }) {
@@ -33,7 +34,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ q
         const genre = getGenre(b);
         return <article className="book" key={b.id}>
           <Link href={`/book/${b.id}`} className="cover" style={{backgroundImage:b.cover_url ? `url("${b.cover_url}")` : undefined}}><span>{genre?.name ?? 'Free book'}</span></Link>
-          <div className="bookInfo"><Link href={`/book/${b.id}`}><h3>{b.title}</h3></Link><p className="author">{b.author}</p><p>{b.description ?? 'A free book available through BookNest.'}</p><div className="actions"><Link className="read" href={`/book/${b.id}`}>View book</Link><button className="save" aria-label="Save book"><Bookmark size={17}/></button></div></div>
+          <div className="bookInfo"><Link href={`/book/${b.id}`}><h3>{b.title}</h3></Link><p className="author">{b.author}</p><p>{b.description ?? 'A free book available through BookNest.'}</p><div className="actions"><Link className="read" href={`/book/${b.id}`}>View book</Link><SaveBookButton bookId={b.id} /></div></div>
         </article>;
       })}</div>}
     </section>
