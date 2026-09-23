@@ -5,6 +5,12 @@ import Link from 'next/link';
 import { Bookmark, ChevronLeft, ChevronRight, Home, List, Settings2 } from 'lucide-react';
 import { supabase } from '../../../lib/supabase-browser';
 
+type ChapterItem = {
+  number: number;
+  label: string;
+  href: string;
+};
+
 type Props = {
   bookId: string;
   title: string;
@@ -15,14 +21,16 @@ type Props = {
   content: string;
   sourceUrl: string | null;
   chapterLabel: string;
+  chapterItems: ChapterItem[];
   nextHref?: string;
   prevHref?: string;
 };
 
 export default function Reader({
-  bookId, title, author, coverUrl, chapter, chapterCount, content, sourceUrl, chapterLabel, nextHref, prevHref
+  bookId, title, author, coverUrl, chapter, chapterCount, content, sourceUrl, chapterLabel, chapterItems, nextHref, prevHref
 }: Props) {
   const storageKey = `booknest-progress-${bookId}-${chapter}`;
+  const lastReaderKey = `booknest-last-reader-${bookId}`;
   const [fontSize, setFontSize] = useState(19);
   const [theme, setTheme] = useState<'light' | 'sepia' | 'dark'>('light');
   const [saved, setSaved] = useState(false);
@@ -48,34 +56,64 @@ export default function Reader({
     setTheme(savedTheme);
     setSaved(savedBookmark);
 
+    let restored = false;
+    let attempts = 0;
     const restore = () => {
+      if (restored) return;
       const y = Number(localStorage.getItem(storageKey) || 0);
-      if (y > 0) window.scrollTo(0, y);
+      if (y <= 0) {
+        restored = true;
+        return;
+      }
+      window.scrollTo(0, y);
+      if (Math.abs(window.scrollY - y) < 3 || attempts >= 12) {
+        restored = true;
+        return;
+      }
+      attempts += 1;
+      window.setTimeout(restore, 100);
     };
-    setTimeout(restore, 120);
+    const timer = window.setTimeout(restore, 120);
+
+    return () => window.clearTimeout(timer);
   }, [bookId, chapter, storageKey]);
 
   useEffect(() => {
+    const savePosition = () => {
+      const position = Math.round(window.scrollY);
+      localStorage.setItem(storageKey, String(position));
+      localStorage.setItem(lastReaderKey, JSON.stringify({ chapter, position }));
+    };
+
     const updateProgress = () => {
       const doc = document.documentElement;
       const max = Math.max(1, doc.scrollHeight - window.innerHeight);
       const pct = Math.min(100, Math.max(0, (window.scrollY / max) * 100));
       setProgress(pct);
-      localStorage.setItem(storageKey, String(Math.round(window.scrollY)));
+      savePosition();
       if (userId) {
         void supabase.from('booknest_reading_progress').upsert({ user_id: userId, book_id: bookId, progress: Number(pct.toFixed(2)), chapter, position: Math.round(window.scrollY), updated_at: new Date().toISOString() });
       }
     };
 
+    const handleVisibility = () => {
+      if (document.visibilityState === 'hidden') savePosition();
+    };
+
     window.addEventListener('scroll', updateProgress, { passive: true });
     window.addEventListener('resize', updateProgress);
+    window.addEventListener('pagehide', savePosition);
+    document.addEventListener('visibilitychange', handleVisibility);
     const timer = window.setTimeout(updateProgress, 250);
+
     return () => {
       window.removeEventListener('scroll', updateProgress);
       window.removeEventListener('resize', updateProgress);
+      window.removeEventListener('pagehide', savePosition);
+      document.removeEventListener('visibilitychange', handleVisibility);
       window.clearTimeout(timer);
     };
-  }, [storageKey, content, userId, bookId]);
+  }, [storageKey, lastReaderKey, content, userId, bookId, chapter]);
 
   const bodyClass = `reader reader-${theme}`;
 
@@ -105,6 +143,10 @@ export default function Reader({
     }
   }
 
+  function openChapter() {
+    setShowContents(false);
+  }
+
   return (
     <main className={bodyClass}>
       <div className="readerProgress" aria-label={`Reading progress ${Math.round(progress)} percent`}>
@@ -123,9 +165,26 @@ export default function Reader({
       </header>
 
       {showContents && <div className="readerContents">
-        <div><strong>Table of contents</strong><button onClick={() => setShowContents(false)}>×</button></div>
-        <p>Chapter {chapter} of {chapterCount}</p>
-        <div className="readerContentsNav">{prevHref && <Link href={prevHref}>← Previous chapter</Link>}{nextHref && <Link href={nextHref}>Next chapter →</Link>}</div>
+        <div className="readerContentsHeader"><strong>Table of contents</strong><button onClick={() => setShowContents(false)} aria-label="Close contents">×</button></div>
+        <p className="readerContentsCount">{chapter} of {chapterCount} chapters</p>
+        <div className="readerChapterList">
+          {chapterItems.map(item => (
+            <Link
+              key={item.number}
+              href={item.href}
+              onClick={openChapter}
+              className={item.number === chapter ? 'current' : ''}
+              aria-current={item.number === chapter ? 'page' : undefined}
+            >
+              <span>{item.number}</span>
+              <strong>{item.label}</strong>
+            </Link>
+          ))}
+        </div>
+        <div className="readerContentsNav">
+          {prevHref && <Link href={prevHref} onClick={openChapter}>← Previous chapter</Link>}
+          {nextHref && <Link href={nextHref} onClick={openChapter}>Next chapter →</Link>}
+        </div>
       </div>}
 
       {showSettings && <div className="readerSettings">
