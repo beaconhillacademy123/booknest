@@ -35,11 +35,15 @@ function labelFromFile(file: string, index: number) {
 }
 
 function cleanExternalHtml(html: string) {
+  const scriptPattern = new RegExp('<script[\\\\s\\\\S]*?<\\\\/script>', 'gi');
+  const stylePattern = new RegExp('<style[\\\\s\\\\S]*?<\\\\/style>', 'gi');
+  const commentPattern = new RegExp('<!--[\\\\s\\\\S]*?-->', 'g');
   return html
-    .replace(/<script[\\s\\S]*?<\\/script>/gi, '')
-    .replace(/<style[\\s\\S]*?<\\/style>/gi, '')
-    .replace(/<!--[\\s\\S]*?-->/g, '');
+    .replace(scriptPattern, '')
+    .replace(stylePattern, '')
+    .replace(commentPattern, '');
 }
+
 export default async function ReadPage({
   params,
   searchParams
