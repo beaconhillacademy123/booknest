@@ -167,3 +167,5 @@ a{text-decoration:none;color:inherit}.sectionHead a,.back{display:flex;align-ite
 .adminActions{display:flex;gap:8px;align-items:center}
 .adminActions button{display:inline-flex;align-items:center;gap:6px;border:1px solid #d9d0c4;border-radius:9px;background:#fff;padding:9px 12px;font-weight:700;cursor:pointer}
 @media(max-width:650px){.adminRequest{flex-direction:column}.adminActions{width:100%}.adminActions button{flex:1;justify-content:center}}
+
+.adminActions{flex-wrap:wrap}.adminActions select,.adminCoverInput{border:1px solid #d9d0c4;border-radius:9px;padding:9px;background:#fff;max-width:220px}.adminCoverInput{min-width:180px}
