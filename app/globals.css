@@ -136,3 +136,15 @@ a{text-decoration:none;color:inherit}.sectionHead a,.back{display:flex;align-ite
 .genreToolbar .search{flex:1;margin:0}
 .genreToolbar .search input{min-width:0}
 @media(max-width:600px){.genreToolbar{flex-direction:column;align-items:stretch}.genreToolbar .secondary{text-align:center}}
+
+/* Account profile */
+.profilePage{max-width:920px}
+.profileCard{border:1px solid #e7e2d9;border-radius:22px;background:#fff;padding:28px;margin-top:24px}
+.profileIdentity{display:flex;align-items:center;gap:18px}
+.profileAvatar{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;background:#f0e8dc;font-family:Georgia,serif;font-size:24px;font-weight:700}
+.profileIdentity h1{margin:0 0 5px;font-family:Georgia,serif}
+.profileIdentity p{margin:0;color:#777}
+.profileActions{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}
+.profileAction{display:inline-flex;align-items:center;gap:8px;padding:11px 15px;border:1px solid #ddd4c8;border-radius:10px;background:#fff;font-weight:700}
+.profileDanger{border-color:#e5c8c8}
+@media(max-width:600px){.profileCard{padding:20px}.profileIdentity{align-items:flex-start}.profileActions>*{width:100%;justify-content:center}}
