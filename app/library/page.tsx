@@ -28,9 +28,9 @@ export default function LibraryPage() {
     setEmail(session.user.email ?? '');
     const { data } = await supabase
       .from('booknest_library')
-      .select('book_id,created_at,booknest_books(id,title,author,cover_url,description,publication_year)')
+      .select('book_id,created_at,booknest_books(id,title,author,cover_url,description,publication_year),booknest_reading_progress(progress,chapter,position)')
       .order('created_at', { ascending: false });
-    const normalized = (data ?? []).map((row: any) => ({ ...row, booknest_books: Array.isArray(row.booknest_books) ? (row.booknest_books[0] ?? null) : row.booknest_books }));
+    const normalized = (data ?? []).map((row: any) => ({ ...row, booknest_books: Array.isArray(row.booknest_books) ? (row.booknest_books[0] ?? null) : row.booknest_books, progress: Array.isArray(row.booknest_reading_progress) ? (row.booknest_reading_progress[0] ?? null) : row.booknest_reading_progress }));
     setRows(normalized as Row[]);
     setLoading(false);
   }
@@ -65,7 +65,7 @@ export default function LibraryPage() {
         if (!b) return null;
         return <article className="book" key={row.book_id}>
           <Link href={`/book/${b.id}`} className="cover" style={{backgroundImage:b.cover_url ? `url("${b.cover_url}")` : undefined}} />
-          <div className="bookInfo"><Link href={`/book/${b.id}`}><h3>{b.title}</h3></Link><p className="author">{b.author}</p><div className="actions"><Link className="read" href={`/read/${b.id}`}>Read</Link><button className="save" onClick={()=>remove(b.id)} aria-label="Remove from library"><Trash2 size={17}/></button></div></div>
+          <div className="bookInfo"><Link href={`/book/${b.id}`}><h3>{b.title}</h3></Link><p className="author">{b.author}</p><div className="libraryProgress">{row.progress ? <><div className="libraryProgressTop"><span>Chapter {row.progress.chapter}</span><strong>{Math.round(row.progress.progress)}%</strong></div><div className="libraryProgressBar"><span style={{width:`${Math.min(100, Math.max(0, Number(row.progress.progress)))}%`}} /></div></> : <span>Not started</span>}</div><div className="actions"><Link className="read" href={`/read/${b.id}`}>{row.progress && Number(row.progress.progress) > 0 ? 'Continue reading' : 'Read'}</Link><button className="save" onClick={()=>remove(b.id)} aria-label="Remove from library"><Trash2 size={17}/></button></div></div>
         </article>;
       })}</div>}
     </section>
