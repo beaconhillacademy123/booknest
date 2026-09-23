@@ -21,9 +21,12 @@ function getSourceId(book: { source_url: string | null }) {
 }
 
 function extractBody(html: string) {
-  const bodyMatch = html.match(/<body[^>]*>([\\s\\S]*?)<\\/body>/i);
-  const body = bodyMatch?.[1] ?? html;
-  return body.replace(/<script[\\s\\S]*?<\\/script>/gi, '').replace(/<style[\\s\\S]*?<\\/style>/gi, '');
+  const lower = html.toLowerCase();
+  const bodyStart = lower.indexOf('<body');
+  const bodyOpenEnd = bodyStart >= 0 ? html.indexOf('>', bodyStart) + 1 : 0;
+  const bodyEnd = lower.indexOf('</body>', bodyOpenEnd);
+  const body = bodyStart >= 0 && bodyEnd >= 0 ? html.slice(bodyOpenEnd, bodyEnd) : html;
+  return body;
 }
 
 function labelFromFile(file: string, index: number) {
