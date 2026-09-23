@@ -34,6 +34,13 @@ function labelFromFile(file: string, index: number) {
   return file.replace('.xhtml', '').replace(/-/g, ' ');
 }
 
+function cleanExternalHtml(html: string) {
+  return html
+    .replace(/<script[\\s\\S]*?<\\/script>/gi, '')
+    .replace(/<style[\\s\\S]*?<\\/style>/gi, '')
+    .replace(/<!--([\\s\\S]*?)-->/g, '');
+}
+
 export default async function ReadPage({
   params,
   searchParams
@@ -50,8 +57,34 @@ export default async function ReadPage({
   const source = sourceId ? SOURCES[sourceId] : undefined;
 
   if (!source) {
-    if (book.read_url) redirect(book.read_url);
-    return null;
+    const gutenbergUrl = sourceId
+      ? `https://www.gutenberg.org/cache/epub/${sourceId}/pg${sourceId}-images.html`
+      : null;
+
+    if (!gutenbergUrl) {
+      if (book.read_url) redirect(book.read_url);
+      return null;
+    }
+
+    const response = await fetch(gutenbergUrl, { next: { revalidate: 86400 } });
+    if (!response.ok) {
+      if (book.read_url) redirect(book.read_url);
+      return null;
+    }
+
+    const html = await response.text();
+    const content = cleanExternalHtml(extractBody(html));
+    return <Reader
+      bookId={id}
+      title={book.title}
+      author={book.author}
+      coverUrl={book.cover_url}
+      chapter={1}
+      chapterCount={1}
+      chapterLabel="Full book"
+      content={content}
+      sourceUrl={book.source_url}
+    />;
   }
 
   const requested = Number(chapterParam || 1);
