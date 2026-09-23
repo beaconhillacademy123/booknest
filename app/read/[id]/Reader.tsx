@@ -110,7 +110,7 @@ export default function Reader({
       </div>
 
       <header className="readerTopbar">
-        <Link href={`/book/${bookId}`} className="readerBrand"><Home size={17}/><span>BookNest</span></Link>
+        <Link href={`/book/${bookId}`} className="readerBrand"><Home size={17}/><span>M King Reads</span></Link>
         <div className="readerTitle"><strong>{title}</strong><small>{author}</small></div>
 
         <div className="readerTools">
