@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Bookmark, ChevronLeft, ChevronRight, Home, List, Moon, Sun, Type } from 'lucide-react';
+import { Bookmark, ChevronLeft, ChevronRight, Home, List, Moon, Sun } from 'lucide-react';
+import { supabase } from '../../../lib/supabase-browser';
 
 type Props = {
   bookId: string;
@@ -26,8 +27,18 @@ export default function Reader({
   const [theme, setTheme] = useState<'light' | 'sepia' | 'dark'>('light');
   const [saved, setSaved] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [userId, setUserId] = useState<string | null>(null);
 
   useEffect(() => {
+    supabase.auth.getSession().then(async ({ data }) => {
+      const uid = data.session?.user.id ?? null;
+      setUserId(uid);
+      if (uid) {
+        const { data: savedProgress } = await supabase.from('booknest_reading_progress').select('progress').eq('user_id', uid).eq('book_id', bookId).maybeSingle();
+        if (savedProgress && chapter === 1) setProgress(Number(savedProgress.progress ?? 0));
+      }
+    });
+
     const savedFont = Number(localStorage.getItem('booknest-font-size') || 19);
     const savedTheme = (localStorage.getItem('booknest-reader-theme') || 'light') as 'light' | 'sepia' | 'dark';
     const savedBookmark = localStorage.getItem(`booknest-bookmark-${bookId}`) === String(chapter);
@@ -49,6 +60,9 @@ export default function Reader({
       const pct = Math.min(100, Math.max(0, (window.scrollY / max) * 100));
       setProgress(pct);
       localStorage.setItem(storageKey, String(Math.round(window.scrollY)));
+      if (userId) {
+        void supabase.from('booknest_reading_progress').upsert({ user_id: userId, book_id: bookId, progress: Number(pct.toFixed(2)), updated_at: new Date().toISOString() });
+      }
     };
 
     window.addEventListener('scroll', updateProgress, { passive: true });
@@ -59,7 +73,7 @@ export default function Reader({
       window.removeEventListener('resize', updateProgress);
       window.clearTimeout(timer);
     };
-  }, [storageKey, content]);
+  }, [storageKey, content, userId, bookId]);
 
   const bodyClass = `reader reader-${theme}`;
 
@@ -81,9 +95,11 @@ export default function Reader({
     if (saved) {
       localStorage.removeItem(key);
       setSaved(false);
+      if (userId) void supabase.from('booknest_bookmarks').delete().eq('user_id', userId).eq('book_id', bookId).eq('location', `chapter-${chapter}`);
     } else {
       localStorage.setItem(key, String(chapter));
       setSaved(true);
+      if (userId) void supabase.from('booknest_bookmarks').upsert({ user_id: userId, book_id: bookId, location: `chapter-${chapter}` });
     }
   }
 
