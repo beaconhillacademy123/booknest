@@ -178,3 +178,6 @@ a{text-decoration:none;color:inherit}.sectionHead a,.back{display:flex;align-ite
   .bookNew .bookInfo{min-height:0}
   .bookNew .bookInfo .actions{align-items:stretch}
 }
+
+.cardGenre{display:inline-flex;align-items:center;width:max-content;max-width:100%;padding:5px 9px;border-radius:999px;background:#f1ede5;color:#5d4a2e;font-size:10px;font-weight:800;margin-bottom:8px}
+.bookNew .cover{border-bottom:1px solid #eee9df}
