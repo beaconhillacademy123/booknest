@@ -169,3 +169,12 @@ a{text-decoration:none;color:inherit}.sectionHead a,.back{display:flex;align-ite
 @media(max-width:650px){.adminRequest{flex-direction:column}.adminActions{width:100%}.adminActions button{flex:1;justify-content:center}}
 
 .adminActions{flex-wrap:wrap}.adminActions select,.adminCoverInput{border:1px solid #d9d0c4;border-radius:9px;padding:9px;background:#fff;max-width:220px}.adminCoverInput{min-width:180px}
+
+/* Mobile catalogue polish */
+@media(max-width:700px){
+  .booksNew,.compactBooks{align-items:start}
+  .bookNew{align-self:start}
+  .bookNew .cover{aspect-ratio:2/3;height:auto;min-height:0}
+  .bookNew .bookInfo{min-height:0}
+  .bookNew .bookInfo .actions{align-items:stretch}
+}
