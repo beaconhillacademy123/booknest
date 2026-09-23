@@ -104,3 +104,15 @@ a{text-decoration:none;color:inherit}.sectionHead a,.back{display:flex;align-ite
   .trustStrip strong{font-size:11px}
   .trustStrip small{font-size:9px}
 }
+
+/* Book detail upgrade */
+.similarSection{padding-top:10px}
+.similarGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.similarCard{background:#fff;border:1px solid #e7e2d9;border-radius:15px;overflow:hidden;transition:.18s}
+.similarCard:hover{transform:translateY(-3px);box-shadow:0 12px 28px #2b241014}
+.similarCover{height:210px;background:#ddd center/cover no-repeat}
+.similarCard>div:last-child{padding:14px;display:flex;flex-direction:column;gap:5px}
+.similarCard strong{font-family:Georgia,serif;font-size:16px;line-height:1.25}
+.similarCard span{font-size:12px;color:#777}
+@media(max-width:850px){.similarGrid{grid-template-columns:repeat(2,1fr)}.similarCover{height:190px}}
+@media(max-width:520px){.similarGrid{gap:12px}.similarCover{height:180px}.similarCard>div:last-child{padding:11px}.similarCard strong{font-size:14px}}
