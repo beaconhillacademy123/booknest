@@ -190,3 +190,14 @@ a{text-decoration:none;color:inherit}.sectionHead a,.back{display:flex;align-ite
 .readerSettingRow button,.readerThemes button{border:1px solid var(--reader-border);background:transparent;color:inherit;border-radius:9px;padding:9px;font-weight:700;cursor:pointer}
 .readerThemes .active{background:#a8782e;color:#fff;border-color:#a8782e}
 @media(max-width:850px){.readerSettings{right:16px;top:76px;width:250px}}
+
+.bookmarksPage{max-width:980px}
+.bookmarkList{display:grid;gap:14px;margin-top:25px}
+.bookmarkItem{display:grid;grid-template-columns:70px 1fr auto;gap:16px;align-items:center;padding:16px;border:1px solid #e7e2d9;border-radius:16px;background:#fff}
+.bookmarkItem img{width:70px;height:96px;object-fit:cover;border-radius:8px}
+.bookmarkItem>div:nth-child(2)>span{font-size:10px;letter-spacing:.1em;text-transform:uppercase;font-weight:800;color:#a8782e}
+.bookmarkItem h3{font-family:Georgia,serif;margin:5px 0 3px;font-size:20px}
+.bookmarkItem p{margin:0;color:#777}
+.bookmarkActions{display:flex;align-items:center;gap:10px}
+.bookmarkActions button{border:1px solid #ddd4c8;background:#fff;border-radius:9px;padding:10px 12px;font-weight:700;cursor:pointer}
+@media(max-width:650px){.bookmarkItem{grid-template-columns:58px 1fr}.bookmarkItem img{width:58px;height:80px}.bookmarkActions{grid-column:1/-1}.bookmarkActions .read{flex:1;justify-content:center}.bookmarkActions button{flex:0 0 auto}}
