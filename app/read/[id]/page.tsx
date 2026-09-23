@@ -73,7 +73,7 @@ function cleanExternalHtml(html: string, baseUrl?: string) {
   const scriptPattern = new RegExp('<script[\\\\s\\\\S]*?<\\\\/script>', 'gi');
   const stylePattern = new RegExp('<style[\\\\s\\\\S]*?<\\\\/style>', 'gi');
   const commentPattern = new RegExp('<!--[\\\\s\\\\S]*?-->', 'g');
-  const imagePattern = new RegExp("src\\\\s*=\\\\s*[\\\\x22\\\\x27]([^\\\\x22\\\\x27]+)[\\\\x22\\\\x27]", "gi");
+  const imagePattern = /src="([^"]+)"/gi;
 
   let cleaned = html
     .replace(scriptPattern, '')
