@@ -201,3 +201,7 @@ a{text-decoration:none;color:inherit}.sectionHead a,.back{display:flex;align-ite
 .bookmarkActions{display:flex;align-items:center;gap:10px}
 .bookmarkActions button{border:1px solid #ddd4c8;background:#fff;border-radius:9px;padding:10px 12px;font-weight:700;cursor:pointer}
 @media(max-width:650px){.bookmarkItem{grid-template-columns:58px 1fr}.bookmarkItem img{width:58px;height:80px}.bookmarkActions{grid-column:1/-1}.bookmarkActions .read{flex:1;justify-content:center}.bookmarkActions button{flex:0 0 auto}}
+
+.readerContents{position:fixed;left:4vw;top:76px;width:260px;background:var(--reader-bg);color:var(--reader-text);border:1px solid var(--reader-border);border-radius:16px;padding:16px;box-shadow:0 18px 45px #0003;z-index:25}
+.readerContents>div:first-child{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.readerContents>div:first-child button{border:0;background:transparent;color:inherit;font-size:22px;cursor:pointer}.readerContents p{font-size:12px;color:var(--reader-muted);margin:0 0 14px}.readerContentsNav{display:flex;flex-direction:column;gap:8px}.readerContentsNav a{padding:9px 10px;border:1px solid var(--reader-border);border-radius:9px;font-size:12px;font-weight:700}
+@media(max-width:850px){.readerContents{left:16px;right:16px;width:auto}}
