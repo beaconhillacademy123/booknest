@@ -45,10 +45,10 @@ export default function LoginForm() {
 
   return <main className="authPage">
     <div className="authCard">
-      <Link href="/" className="authBrand"><div className="logo"><BookOpen size={22}/></div><span>BookNest</span></Link>
+      <Link href="/" className="authBrand"><div className="logo"><BookOpen size={22}/></div><span>M King Reads</span></Link>
       <div className="authIntro">
         <h1>{mode === 'login' ? 'Welcome back.' : 'Create your library.'}</h1>
-        <p>{mode === 'login' ? 'Sign in to save books and keep your reading progress.' : 'Create a free BookNest account to build your personal library.'}</p>
+        <p>{mode === 'login' ? 'Sign in to save books and keep your reading progress.' : 'Create a free M King Reads account to build your personal library.'}</p>
       </div>
       <form className="authForm" onSubmit={submit}>
         <label>Email<input type="email" value={email} onChange={e=>setEmail(e.target.value)} required autoComplete="email" placeholder="you@example.com"/></label>
@@ -57,7 +57,7 @@ export default function LoginForm() {
         <button className="authSubmit" disabled={busy}>{busy ? <><Loader2 size={17} className="spin"/> Please wait...</> : mode === 'login' ? 'Log in' : 'Create account'}</button>
       </form>
       <button className="authSwitch" onClick={()=>{setMode(mode === 'login' ? 'signup' : 'login');setMessage('')}}>
-        {mode === 'login' ? 'New to BookNest? Create an account' : 'Already have an account? Log in'}
+        {mode === 'login' ? 'New to M King Reads? Create an account' : 'Already have an account? Log in'}
       </button>
       <Link className="authBack" href="/">← Back to library</Link>
     </div>
