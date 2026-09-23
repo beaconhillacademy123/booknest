@@ -69,14 +69,28 @@ function chapterLabel(sourceId: string | null, file: string, index: number) {
   return labelFromFile(file, index);
 }
 
-function cleanExternalHtml(html: string) {
+function cleanExternalHtml(html: string, baseUrl?: string) {
   const scriptPattern = new RegExp('<script[\\\\s\\\\S]*?<\\\\/script>', 'gi');
   const stylePattern = new RegExp('<style[\\\\s\\\\S]*?<\\\\/style>', 'gi');
   const commentPattern = new RegExp('<!--[\\\\s\\\\S]*?-->', 'g');
-  return html
+  const imagePattern = new RegExp('(src\\\\s*=\\\\s*["\\\\'])(?!https?:|data:|\\\\/\\\\/)([^"\\\\']+)(["\\\\'])', 'gi');
+
+  let cleaned = html
     .replace(scriptPattern, '')
     .replace(stylePattern, '')
     .replace(commentPattern, '');
+
+  if (baseUrl) {
+    cleaned = cleaned.replace(imagePattern, (_match, prefix, src, suffix) => {
+      try {
+        return prefix + new URL(src, baseUrl).toString() + suffix;
+      } catch {
+        return _match;
+      }
+    });
+  }
+
+  return cleaned;
 }
 
 export default async function ReadPage({
@@ -111,7 +125,7 @@ export default async function ReadPage({
     }
 
     const html = await response.text();
-    const content = cleanExternalHtml(extractBody(html));
+    const content = cleanExternalHtml(extractBody(html), gutenbergUrl);
     return <Reader
       bookId={id}
       title={book.title}
