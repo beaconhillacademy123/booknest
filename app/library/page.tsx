@@ -55,7 +55,7 @@ export default function LibraryPage() {
 
   return <main>
     <header className="topbar">
-      <Link href="/" className="brand"><div className="logo"><BookOpen size={22}/></div><span>BookNest</span></Link>
+      <Link href="/" className="brand"><div className="logo"><BookOpen size={22}/></div><span>M King Reads</span></Link>
       <div className="libraryHeaderActions"><span className="libraryEmail">{email}</span><button className="logoutButton" onClick={logout}><LogOut size={15}/> Log out</button></div>
     </header>
     <section className="section libraryPage">
