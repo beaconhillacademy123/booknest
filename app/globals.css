@@ -282,3 +282,6 @@ a{text-decoration:none;color:inherit}.sectionHead a,.back{display:flex;align-ite
 .freeBookReaderBanner span{display:flex;align-items:center;gap:5px;color:#d8dfda}
 .freeBookReaderBanner~.reader{padding-top:42px}
 @media(max-width:650px){.freeBookReaderBanner{padding:0 16px}.freeBookReaderBanner span{font-size:0}.freeBookReaderBanner span svg{display:block}.freeBookReaderBanner~.reader{padding-top:42px}}
+
+.freeBookReaderBanner~.reader .readerTopbar{top:42px}
+.freeBookReaderBanner~.reader .readerProgress{top:42px}
