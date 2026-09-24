@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Bookmark, ChevronLeft, ChevronRight, Home, List, Settings2 } from 'lucide-react';
+import { Bookmark, ChevronLeft, ChevronRight, Home, List, Search, Settings2 } from 'lucide-react';
 import { supabase } from '../../../lib/supabase-browser';
 import ShareReaderButton from '../../components/ShareReaderButton';
 
@@ -46,6 +46,7 @@ export default function Reader({
   const [userId, setUserId] = useState<string | null>(null);
   const [showSettings, setShowSettings] = useState(false);
   const [showContents, setShowContents] = useState(false);
+  const [contentsSearch, setContentsSearch] = useState('');
   const canPersistToCloud = persistToCloud && /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(bookId);
 
   useEffect(() => {
@@ -192,6 +193,11 @@ export default function Reader({
     setShowContents(false);
   }
 
+  const filteredChapterItems = chapterItems.filter(item => {
+    const query = contentsSearch.trim().toLowerCase();
+    return !query || item.label.toLowerCase().includes(query) || String(item.number).includes(query);
+  });
+
   return (
     <main className={bodyClass}>
       <div className="readerProgress" aria-label={`Reading progress ${Math.round(progress)} percent`}>
@@ -213,8 +219,19 @@ export default function Reader({
       {showContents && <div className="readerContents">
         <div className="readerContentsHeader"><strong>Table of contents</strong><button onClick={() => setShowContents(false)} aria-label="Close contents">×</button></div>
         <p className="readerContentsCount">{chapter} of {chapterCount} chapters</p>
+        {chapterItems.length > 8 && (
+          <label className="readerContentsSearch">
+            <Search size={14}/>
+            <input
+              value={contentsSearch}
+              onChange={event => setContentsSearch(event.target.value)}
+              placeholder="Find a chapter..."
+              aria-label="Find a chapter"
+            />
+          </label>
+        )}
         <div className="readerChapterList">
-          {chapterItems.map(item => (
+          {filteredChapterItems.map(item => (
             <Link
               key={item.number}
               href={item.href}
@@ -226,6 +243,7 @@ export default function Reader({
               <strong>{item.label}</strong>
             </Link>
           ))}
+          {filteredChapterItems.length === 0 && <p className="readerContentsEmpty">No matching chapters.</p>}
         </div>
         <div className="readerContentsNav">
           {prevHref && <Link href={prevHref} onClick={openChapter}>← Previous chapter</Link>}
