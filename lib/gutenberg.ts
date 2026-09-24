@@ -67,7 +67,7 @@ export function splitGutenbergHtml(html: string): GutenbergChapter[] {
   let boundaries = explicit;
   if (boundaries.length < 2) {
     // Some older Gutenberg editions use paragraph/span blocks instead of h-tags.
-    const blockPattern = /<(p|div|span)([^>]*)>([\\s\\S]*?)<\\/\\1>/gi;
+    const blockPattern = /<(p|div|span)([^>]*)>([\s\S]*?)<\/\1>/gi;
     const blockCandidates: Array<{ tag: string; attrs: string; label: string; start: number; end: number }> = [];
     let block: RegExpExecArray | null;
     while ((block = blockPattern.exec(html)) !== null) {
