@@ -11,12 +11,23 @@ export default function LoginForm() {
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
   const [busy, setBusy] = useState(false);
+  const [forgot, setForgot] = useState(false);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
       if (data.session) window.location.href = '/library';
     });
   }, []);
+
+  async function resetPassword() {
+    if (busy) return;
+    const address = email.trim();
+    if (!address) { setMessage('Enter your email address first.'); return; }
+    setBusy(true); setMessage('');
+    const { error } = await supabase.auth.resetPasswordForEmail(address, { redirectTo: `${window.location.origin}/reset-password` });
+    setMessage(error ? error.message : 'Password reset instructions have been sent to your email.');
+    setBusy(false);
+  }
 
   async function submit(e: FormEvent) {
     e.preventDefault();
@@ -53,13 +64,15 @@ export default function LoginForm() {
       </div>
       <form className="authForm" onSubmit={submit}>
         <label>Email<input type="email" value={email} onChange={e=>setEmail(e.target.value)} required autoComplete="email" placeholder="you@example.com"/></label>
-        <label>Password<input type="password" value={password} onChange={e=>setPassword(e.target.value)} required minLength={6} autoComplete={mode === 'login' ? 'current-password' : 'new-password'} placeholder="At least 6 characters"/></label>
+        {!forgot && <label>Password<input type="password" value={password} onChange={e=>setPassword(e.target.value)} required minLength={6} autoComplete={mode === 'login' ? 'current-password' : 'new-password'} placeholder="At least 6 characters"/></label>}
+        {forgot && <p className="authHint">Enter your email and we'll send you a secure password reset link.</p>}
         {message && <div className="authMessage">{message}</div>}
-        <button className="authSubmit" disabled={busy}>{busy ? <><Loader2 size={17} className="spin"/> Please wait...</> : mode === 'login' ? 'Log in' : 'Create account'}</button>
+        {forgot ? <button type="button" className="authSubmit" disabled={busy} onClick={resetPassword}>{busy ? <><Loader2 size={17} className="spin"/> Please wait...</> : 'Send reset link'}</button> : <button className="authSubmit" disabled={busy}>{busy ? <><Loader2 size={17} className="spin"/> Please wait...</> : mode === 'login' ? 'Log in' : 'Create account'}</button>}
       </form>
-      <button className="authSwitch" onClick={()=>{setMode(mode === 'login' ? 'signup' : 'login');setMessage('')}}>
+      {mode === 'login' && <button className="authSwitch" onClick={()=>{setForgot(v=>!v);setMessage('')}}>{forgot ? '← Back to log in' : 'Forgot your password?'}</button>}
+      {!forgot && <button className="authSwitch" onClick={()=>{setMode(mode === 'login' ? 'signup' : 'login');setMessage('')}}>
         {mode === 'login' ? 'New to M King Reads? Create an account' : 'Already have an account? Log in'}
-      </button>
+      </button>}
       <Link className="authBack" href="/">← Back to library</Link>
     </div>
   </main>;
