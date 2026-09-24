@@ -246,3 +246,30 @@ a{text-decoration:none;color:inherit}.sectionHead a,.back{display:flex;align-ite
 .suggestionStatus-approved{background:#e8f3eb;color:#2f7043}
 .suggestionStatus-rejected{background:#f6e8e8;color:#8a3f3f}
 @media(max-width:600px){.suggestionItem{grid-template-columns:34px 1fr;align-items:start}.suggestionIcon{width:34px;height:34px}.suggestionStatus{grid-column:2;justify-self:start}.suggestionsPage .sectionHead{display:block}.suggestionsPage .sectionHead>.profileAction{display:inline-flex;margin-top:12px}}
+
+.freeBooksPage{max-width:1200px}
+.freeBooksSearch{max-width:760px;margin:24px 0 14px}
+.freeBookTopics{display:flex;gap:8px;overflow-x:auto;padding:4px 0 16px;scrollbar-width:thin}
+.freeBookTopics a{white-space:nowrap;padding:8px 12px;border:1px solid #ded8ce;border-radius:999px;font-size:11px;font-weight:800;background:#fff}
+.freeBookTopics a.active{background:#2d261f;color:#fff;border-color:#2d261f}
+.freeBooksMeta{font-size:12px;color:#777268;margin:8px 0 16px}
+.freeBooksMeta strong{color:#292722}
+.freeBookGrid{grid-template-columns:repeat(4,minmax(0,1fr))}
+.freeBookCard .actions{display:flex;gap:7px;flex-wrap:wrap}
+.freeBookCard .actions a{display:inline-flex;align-items:center;gap:5px}
+.freeBooksPagination{display:flex;justify-content:space-between;gap:12px;margin-top:24px}
+.freeBooksPagination a{display:inline-flex;align-items:center;gap:5px;padding:10px 13px;border:1px solid #ded8ce;border-radius:10px;font-size:12px;font-weight:800}
+.sourceNote{margin-top:24px;color:#827a6e;font-size:11px;line-height:1.7}
+.freeBookDetails{max-width:1000px}
+.freeBookHero{display:grid;grid-template-columns:220px 1fr;gap:32px;align-items:start;margin-top:24px}
+.freeBookLargeCover{width:220px;min-height:300px;border-radius:14px;border:1px solid #ded8ce;background:#f2eee7;display:grid;place-items:center;overflow:hidden}
+.freeBookLargeCover img{display:block;width:100%;height:auto}
+.freeBookHero h1{margin:8px 0;font-size:clamp(30px,5vw,52px);line-height:1.02}
+.freeBookAuthor{font-weight:800;color:#6d604f}
+.freeBookDetailActions{display:flex;gap:8px;flex-wrap:wrap;margin:20px 0}
+.freeBookMeta{display:flex;gap:12px;flex-wrap:wrap;color:#777268;font-size:11px}
+.freeBookSubjects{margin-top:32px;padding-top:20px;border-top:1px solid #ded8ce}
+.freeBookSubjects h2{font-size:20px}
+.freeBookSubjects p{color:#777268;line-height:1.7}
+@media(max-width:900px){.freeBookGrid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:600px){.freeBookGrid{grid-template-columns:repeat(2,minmax(0,1fr))}.freeBookHero{grid-template-columns:1fr;gap:20px}.freeBookLargeCover{width:min(210px,70vw);min-height:260px}.freeBookHero h1{font-size:32px}}
