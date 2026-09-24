@@ -11,6 +11,7 @@ type LastBook = {
   title: string;
   author: string;
   coverUrl?: string | null;
+  resumeHref?: string;
 };
 
 export default function ContinueReading() {
@@ -28,7 +29,8 @@ export default function ContinueReading() {
           position: Math.max(0, Math.floor(Number(parsed.position) || 0)),
           title: String(parsed.title),
           author: String(parsed.author || ''),
-          coverUrl: parsed.coverUrl || null
+          coverUrl: parsed.coverUrl || null,
+          resumeHref: typeof parsed.resumeHref === 'string' ? parsed.resumeHref : undefined
         });
       }
     } catch {}
@@ -46,7 +48,7 @@ export default function ContinueReading() {
         <h2>{book.title}</h2>
         <p>{book.author} · Chapter {book.chapter}</p>
       </div>
-      <Link className="continueReadingButton" href={'/read/' + book.bookId + '?chapter=' + book.chapter}>
+      <Link className="continueReadingButton" href={book.resumeHref || ('/read/' + book.bookId + '?chapter=' + book.chapter)}>
         Continue reading <ChevronRight size={17} />
       </Link>
     </section>
