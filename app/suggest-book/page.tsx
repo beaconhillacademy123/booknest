@@ -29,7 +29,7 @@ export default function SuggestBookPage() {
   return <main>
     <header className="topbar"><Link href="/" className="brand"><div className="logo"><BookOpen size={22}/></div><span>M King Reads</span></Link><Link href="/library" className="login">My Library</Link></header>
     <section className="section suggestPage">
-      <Link href="/library" className="back"><ArrowLeft size={16}/> Back to my library</Link>
+      <Link href="/library" className="back"><ArrowLeft size={16}/> Back to my library</Link><Link href="/my-suggestions" className="back">View my suggestions</Link>
       <div className="suggestCard">
         <span className="sectionKicker">HELP GROW THE LIBRARY</span>
         <h1>Suggest a book</h1>
