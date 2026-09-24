@@ -10,6 +10,7 @@ export default function ProfilePage() {
   const [initial, setInitial] = useState('M');
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState({ saved: 0, progress: 0, completed: 0 });
+  const [loggingOut, setLoggingOut] = useState(false);
 
   useEffect(() => {
     async function load() {
@@ -38,6 +39,8 @@ export default function ProfilePage() {
   }, []);
 
   async function logout() {
+    if (loggingOut) return;
+    setLoggingOut(true);
     await supabase.auth.signOut();
     window.location.href = '/';
   }
@@ -64,7 +67,7 @@ export default function ProfilePage() {
         <div className="profileActions">
           <Link className="profileAction" href="/library"><LibraryBig size={17}/> Open My Library</Link><Link className="profileAction" href="/bookmarks"><BookOpen size={17}/> My Bookmarks</Link>
           <Link className="profileAction" href="/"><UserRound size={17}/> Discover books</Link>
-          <button className="profileAction profileDanger" onClick={logout}><LogOut size={17}/> Log out</button>
+          <button className="profileAction profileDanger" onClick={logout} disabled={loggingOut}><LogOut size={17}/> {loggingOut ? "Logging out…" : "Log out"}</button>
         </div>
       </div>
     </section>
