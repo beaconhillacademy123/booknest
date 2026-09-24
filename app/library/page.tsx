@@ -23,6 +23,7 @@ export default function LibraryPage() {
   const [rows, setRows] = useState<Row[]>([]);
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(true);
+  const [removing, setRemoving] = useState<string | null>(null);
 
   async function load() {
     const { data: { session } } = await supabase.auth.getSession();
@@ -49,8 +50,11 @@ export default function LibraryPage() {
   }, []);
 
   async function remove(bookId: string) {
-    await supabase.from('booknest_library').delete().eq('book_id', bookId);
-    setRows(current => current.filter(row => row.book_id !== bookId));
+    if (removing) return;
+    setRemoving(bookId);
+    const { error } = await supabase.from('booknest_library').delete().eq('book_id', bookId);
+    if (!error) setRows(current => current.filter(row => row.book_id !== bookId));
+    setRemoving(null);
   }
 
   async function logout() {
@@ -70,7 +74,7 @@ export default function LibraryPage() {
         if (!b) return null;
         return <article className="book" key={row.book_id}>
           <Link href={`/book/${b.id}`} className="cover" style={{backgroundImage:b.cover_url ? `url("${b.cover_url}")` : undefined}} />
-          <div className="bookInfo"><Link href={`/book/${b.id}`}><h3>{b.title}</h3></Link><p className="author">{b.author}</p><div className="libraryProgress">{row.progress ? <><div className="libraryProgressTop"><span>Chapter {row.progress.chapter}</span><strong>{Math.round(row.progress.progress)}%</strong></div><div className="libraryProgressBar"><span style={{width:`${Math.min(100, Math.max(0, Number(row.progress.progress)))}%`}} /></div></> : <span>Not started</span>}</div><div className="actions"><Link className="read" href={row.progress && Number(row.progress.progress) > 0 && Number(row.progress.progress) < 100 ? `/read/${b.id}?chapter=${Math.max(1, Number(row.progress.chapter ?? 1))}` : `/read/${b.id}`}>{row.progress && Number(row.progress.progress) >= 100 ? 'Read again' : row.progress && Number(row.progress.progress) > 0 ? 'Continue reading' : 'Read'}</Link><button className="save" onClick={()=>remove(b.id)} aria-label="Remove from library"><Trash2 size={17}/></button></div></div>
+          <div className="bookInfo"><Link href={`/book/${b.id}`}><h3>{b.title}</h3></Link><p className="author">{b.author}</p><div className="libraryProgress">{row.progress ? <><div className="libraryProgressTop"><span>Chapter {row.progress.chapter}</span><strong>{Math.round(row.progress.progress)}%</strong></div><div className="libraryProgressBar"><span style={{width:`${Math.min(100, Math.max(0, Number(row.progress.progress)))}%`}} /></div></> : <span>Not started</span>}</div><div className="actions"><Link className="read" href={row.progress && Number(row.progress.progress) > 0 && Number(row.progress.progress) < 100 ? `/read/${b.id}?chapter=${Math.max(1, Number(row.progress.chapter ?? 1))}` : `/read/${b.id}`}>{row.progress && Number(row.progress.progress) >= 100 ? 'Read again' : row.progress && Number(row.progress.progress) > 0 ? 'Continue reading' : 'Read'}</Link><button className="save" onClick={()=>remove(b.id)} disabled={removing === b.id} aria-label="Remove from library" title={removing === b.id ? "Removing…" : "Remove from library"}><Trash2 size={17}/></button></div></div>
         </article>;
       })}</div>}
     </section>
