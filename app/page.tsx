@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import { BookOpen, Search, Sparkles, ChevronRight, Bookmark, Globe2, LibraryBig } from 'lucide-react';
 import SaveBookButton from './components/SaveBookButton';
-import InstallPrompt from './components/InstallPrompt';
 import ContinueReading from './components/ContinueReading';
 import { getBooks, getGenres, getGenre, searchBooks } from '../lib/booknest';
 
@@ -21,7 +20,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ q
   }).slice(0, 4);
   const otherBooks = books.filter(b => !primaryBooks.some(p => p.id === b.id)).slice(0, 8);
 
-  return <main><InstallPrompt /><ContinueReading />
+  return <main><ContinueReading />
     <header className="topbar">
       <Link href="/" className="brand"><div className="logo"><BookOpen size={22}/></div><span>M King Reads</span></Link>
       <nav><Link className="active" href="/">Home</Link><Link href="/#genres">Genres</Link><Link href="/library">My Library</Link></nav>
