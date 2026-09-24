@@ -26,10 +26,13 @@ type Props = {
   resumeBookmark?: boolean;
   nextHref?: string;
   prevHref?: string;
+  backHref?: string;
+  persistToCloud?: boolean;
+  sourceLabel?: string;
 };
 
 export default function Reader({
-  bookId, title, author, coverUrl, chapter, chapterCount, content, sourceUrl, chapterLabel, chapterItems, resumeBookmark = false, nextHref, prevHref
+  bookId, title, author, coverUrl, chapter, chapterCount, content, sourceUrl, chapterLabel, chapterItems, resumeBookmark = false, nextHref, prevHref, backHref, persistToCloud = true, sourceLabel = 'View source'
 }: Props) {
   const storageKey = `booknest-progress-${bookId}-${chapter}`;
   const lastReaderKey = `booknest-last-reader-${bookId}`;
@@ -42,12 +45,13 @@ export default function Reader({
   const [userId, setUserId] = useState<string | null>(null);
   const [showSettings, setShowSettings] = useState(false);
   const [showContents, setShowContents] = useState(false);
+  const canPersistToCloud = persistToCloud && /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(bookId);
 
   useEffect(() => {
     supabase.auth.getSession().then(async ({ data }) => {
       const uid = data.session?.user.id ?? null;
       setUserId(uid);
-      if (uid) {
+      if (uid && canPersistToCloud) {
         const { data: savedProgress } = await supabase.from('booknest_reading_progress').select('progress,chapter,position').eq('user_id', uid).eq('book_id', bookId).maybeSingle();
         if (savedProgress) {
           const savedOverall = Number(savedProgress.progress ?? 0);
@@ -92,7 +96,7 @@ export default function Reader({
     const timer = window.setTimeout(restore, 120);
 
     return () => window.clearTimeout(timer);
-  }, [bookId, chapter, storageKey, resumeBookmark]);
+  }, [bookId, chapter, storageKey, resumeBookmark, canPersistToCloud]);
 
   useEffect(() => {
     const savePosition = () => {
@@ -110,7 +114,7 @@ export default function Reader({
       setProgress(pct);
       setOverallProgress(overall);
       savePosition();
-      if (userId) {
+      if (userId && canPersistToCloud) {
         void supabase.from('booknest_reading_progress').upsert({
           user_id: userId, book_id: bookId, progress: Number(overall.toFixed(2)),
           chapter, position: Math.round(window.scrollY), updated_at: new Date().toISOString()
@@ -119,7 +123,7 @@ export default function Reader({
     };
 
     const saveProgressNow = () => {
-      if (!userId) return;
+      if (!userId || !canPersistToCloud) return;
       const doc = document.documentElement;
       const max = Math.max(1, doc.scrollHeight - window.innerHeight);
       const pct = Math.min(100, Math.max(0, (window.scrollY / max) * 100));
@@ -149,7 +153,7 @@ export default function Reader({
       saveProgressNow();
       window.clearTimeout(timer);
     };
-  }, [storageKey, lastReaderKey, content, userId, bookId, chapter]);
+  }, [storageKey, lastReaderKey, content, userId, bookId, chapter, canPersistToCloud]);
 
   const bodyClass = `reader reader-${theme}`;
 
@@ -173,13 +177,13 @@ export default function Reader({
       localStorage.removeItem(`booknest-bookmark-position-${bookId}-${chapter}`);
       setBookmarkPosition(0);
       setSaved(false);
-      if (userId) void supabase.from('booknest_bookmarks').delete().eq('user_id', userId).eq('book_id', bookId).eq('location', `chapter-${chapter}`);
+      if (userId && canPersistToCloud) void supabase.from('booknest_bookmarks').delete().eq('user_id', userId).eq('book_id', bookId).eq('location', `chapter-${chapter}`);
     } else {
       localStorage.setItem(key, '1');
       localStorage.setItem(`booknest-bookmark-position-${bookId}-${chapter}`, String(Math.round(window.scrollY)));
       setBookmarkPosition(Math.round(window.scrollY));
       setSaved(true);
-      if (userId) void supabase.from('booknest_bookmarks').upsert({ user_id: userId, book_id: bookId, location: `chapter-${chapter}` });
+      if (userId && canPersistToCloud) void supabase.from('booknest_bookmarks').upsert({ user_id: userId, book_id: bookId, location: `chapter-${chapter}` });
     }
   }
 
@@ -194,7 +198,7 @@ export default function Reader({
       </div>
 
       <header className="readerTopbar">
-        <Link href={`/book/${bookId}`} className="readerBrand"><Home size={17}/><span>M King Reads</span></Link>
+        <Link href={backHref || `/book/${bookId}`} className="readerBrand"><Home size={17}/><span>M King Reads</span></Link>
         <div className="readerTitle"><strong>{title}</strong><small>{author}</small></div>
 
         <div className="readerTools">
@@ -283,7 +287,7 @@ export default function Reader({
             )}
           </nav>
 
-          {sourceUrl && <p className="readerSource">This reading edition is presented from an open ebook source. <a href={sourceUrl} target="_blank" rel="noreferrer">View source</a>.</p>}
+          {sourceUrl && <p className="readerSource">This reading edition is presented from an open ebook source. <a href={sourceUrl} target="_blank" rel="noreferrer">{sourceLabel}</a>.</p>}
         </article>
       </div>
     </main>
