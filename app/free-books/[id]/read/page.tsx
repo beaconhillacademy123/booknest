@@ -101,7 +101,7 @@ export default async function FreeBookReader({
     <>
       <div className="freeBookReaderBanner">
         <Link href={'/free-books/' + book.id}><ArrowLeft size={15}/> Back to book</Link>
-        <span><BookOpen size={15}/> Free ebook · Project Gutenberg source</span>
+        <span><BookOpen size={15}/> Free to access · Project Gutenberg source</span>
       </div>
       <Reader
         bookId={'gutenberg-' + book.id}
@@ -125,6 +125,7 @@ export default async function FreeBookReader({
         nextHref={chapter < chapters.length ? chapterHref(chapter + 1) : undefined}
         resumeHref={chapterHref(chapter)}
       />
+      <div className="readerCopyrightNotice"><strong>Copyright &amp; availability notice</strong><span>This edition is provided through a third-party source. Copyright and public-domain status may vary by jurisdiction. Please verify applicable rights before downloading, reproducing, distributing, publishing, or commercially using this work.</span><a href={"https://www.gutenberg.org/ebooks/" + book.id} target="_blank" rel="noreferrer">View the Project Gutenberg source and terms</a></div>
     </>
   );
 }
