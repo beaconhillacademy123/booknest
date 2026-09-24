@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, BookOpen } from 'lucide-react';
 import Reader from '../../../read/[id]/Reader';
+import { splitGutenbergHtml } from '../../../../lib/gutenberg';
 
 type Book = {
   id: number;
@@ -45,8 +46,22 @@ function cleanExternalHtml(html: string, baseUrl: string) {
   });
 }
 
-export default async function FreeBookReader({ params }: { params: Promise<{ id: string }> }) {
+function getRequestedChapter(value: string | string[] | undefined, total: number) {
+  const raw = Array.isArray(value) ? value[0] : value;
+  const parsed = Number(raw);
+  if (!Number.isFinite(parsed)) return 1;
+  return Math.min(total, Math.max(1, Math.floor(parsed)));
+}
+
+export default async function FreeBookReader({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ chapter?: string | string[] }>;
+}) {
   const { id } = await params;
+  const { chapter: requestedChapter } = await searchParams;
   const book = await getBook(id);
   if (!book) notFound();
 
@@ -73,9 +88,14 @@ export default async function FreeBookReader({ params }: { params: Promise<{ id:
   }
 
   const raw = await response.text();
-  const content = cleanExternalHtml(extractBody(raw), html);
+  const cleaned = cleanExternalHtml(extractBody(raw), html);
+  const chapters = splitGutenbergHtml(cleaned);
+  const chapter = getRequestedChapter(requestedChapter, chapters.length);
+  const current = chapters[chapter - 1];
   const author = book.authors?.[0]?.name || 'Unknown author';
   const coverUrl = book.formats['image/jpeg'] || null;
+  const readerBase = '/free-books/' + book.id + '/read';
+  const chapterHref = (number: number) => readerBase + '?chapter=' + number;
 
   return (
     <>
@@ -88,15 +108,22 @@ export default async function FreeBookReader({ params }: { params: Promise<{ id:
         title={book.title}
         author={author}
         coverUrl={coverUrl}
-        chapter={1}
-        chapterCount={1}
-        chapterLabel="Full book"
-        chapterItems={[{ number: 1, label: 'Full book', href: '/free-books/' + book.id + '/read' }]}
-        content={content}
+        chapter={chapter}
+        chapterCount={chapters.length}
+        chapterLabel={current.label}
+        chapterItems={chapters.map((item, index) => ({
+          number: index + 1,
+          label: item.label,
+          href: chapterHref(index + 1),
+        }))}
+        content={current.content}
         sourceUrl={'https://www.gutenberg.org/ebooks/' + book.id}
         backHref={'/free-books/' + book.id}
         persistToCloud={false}
         sourceLabel="Project Gutenberg"
+        prevHref={chapter > 1 ? chapterHref(chapter - 1) : undefined}
+        nextHref={chapter < chapters.length ? chapterHref(chapter + 1) : undefined}
+        resumeHref={chapterHref(chapter)}
       />
     </>
   );
