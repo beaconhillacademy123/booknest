@@ -22,12 +22,13 @@ type Props = {
   sourceUrl: string | null;
   chapterLabel: string;
   chapterItems: ChapterItem[];
+  resumeBookmark?: boolean;
   nextHref?: string;
   prevHref?: string;
 };
 
 export default function Reader({
-  bookId, title, author, coverUrl, chapter, chapterCount, content, sourceUrl, chapterLabel, chapterItems, nextHref, prevHref
+  bookId, title, author, coverUrl, chapter, chapterCount, content, sourceUrl, chapterLabel, chapterItems, resumeBookmark = false, nextHref, prevHref
 }: Props) {
   const storageKey = `booknest-progress-${bookId}-${chapter}`;
   const lastReaderKey = `booknest-last-reader-${bookId}`;
@@ -73,7 +74,8 @@ export default function Reader({
     let attempts = 0;
     const restore = () => {
       if (restored) return;
-      const y = Number(localStorage.getItem(storageKey) || 0);
+      const bookmarkY = resumeBookmark ? Number(localStorage.getItem(`booknest-bookmark-position-${bookId}-${chapter}`) || 0) : 0;
+      const y = bookmarkY > 0 ? bookmarkY : Number(localStorage.getItem(storageKey) || 0);
       if (y <= 0) {
         restored = true;
         return;
@@ -89,7 +91,7 @@ export default function Reader({
     const timer = window.setTimeout(restore, 120);
 
     return () => window.clearTimeout(timer);
-  }, [bookId, chapter, storageKey]);
+  }, [bookId, chapter, storageKey, resumeBookmark]);
 
   useEffect(() => {
     const savePosition = () => {
