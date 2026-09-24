@@ -271,7 +271,7 @@ export default function Reader({
 
           <div className="readerBody" style={{ fontSize: `${fontSize}px` }} dangerouslySetInnerHTML={{ __html: content }} />
 
-          {!nextHref && overallProgress >= 99.5 && <div className="readerComplete" role="status"><strong>🎉 You finished this book.</strong><span>Your reading progress has reached 100%.</span><Link href={`/book/${bookId}`}>Back to book</Link></div>}
+          {!nextHref && overallProgress >= 99.5 && <div className="readerComplete" role="status"><strong>🎉 You finished this book.</strong><span>Your reading progress has reached 100%.</span><Link href={backHref || `/book/${bookId}`}>Back to book</Link></div>}
 
           <nav className="readerNav" aria-label="Chapter navigation">
             {prevHref ? (
