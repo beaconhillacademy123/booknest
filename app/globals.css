@@ -290,3 +290,11 @@ a{text-decoration:none;color:inherit}.sectionHead a,.back{display:flex;align-ite
 .readerContentsSearch input{min-width:0;width:100%;border:0;outline:0;background:transparent;color:var(--reader-text);font-size:12px}
 .readerContentsSearch input::placeholder{color:var(--reader-muted)}
 .readerContentsEmpty{font-size:12px;color:var(--reader-muted);padding:14px 8px;text-align:center}
+
+.copyrightNotice{margin-top:28px;padding:22px 24px;border:1px solid #dcd5c9;border-radius:16px;background:#f1ede6;color:#5e5a52;line-height:1.65}
+.copyrightNotice strong{display:block;font-family:Georgia,serif;font-size:18px;color:#2d2a25;margin-bottom:9px}
+.copyrightNotice p{margin:7px 0;font-size:12px}
+.copyrightNotice small{display:block;margin-top:10px;color:#827a6e;font-size:11px}
+.readerCopyrightNotice{max-width:900px;margin:28px auto 42px;padding:16px 20px;border-top:1px solid var(--reader-border);border-bottom:1px solid var(--reader-border);display:flex;flex-direction:column;gap:6px;color:var(--reader-muted);font-size:11px;line-height:1.6}
+.readerCopyrightNotice strong{color:var(--reader-text);font-size:12px}
+.readerCopyrightNotice a{font-weight:800;color:var(--reader-text);text-decoration:underline}
