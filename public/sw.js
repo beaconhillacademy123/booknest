@@ -1,4 +1,4 @@
-const CACHE_NAME='m-king-reads-v2';
+const CACHE_NAME='m-king-reads-v3';
 const APP_SHELL=['/','/login','/manifest.webmanifest','/icon-192.svg','/icon-512.svg'];
 
 self.addEventListener('install',event=>{
@@ -15,13 +15,20 @@ self.addEventListener('activate',event=>{
 
 self.addEventListener('fetch',event=>{
   if(event.request.method!=='GET') return;
+
   const url=new URL(event.request.url);
   if(url.origin!==self.location.origin) return;
+
+  const isNavigation=event.request.mode==='navigate';
+  const isStaticAsset=/\.(?:css|js|mjs|png|jpg|jpeg|webp|svg|ico|woff2?)$/i.test(url.pathname);
+
+  // Keep API/data responses network-only so the app does not serve stale catalogue or account data.
+  if(!isNavigation && !isStaticAsset) return;
 
   event.respondWith(
     fetch(event.request)
       .then(response=>{
-        if(response.ok && (event.request.mode==='navigate' || response.type==='basic')){
+        if(response.ok){
           const copy=response.clone();
           caches.open(CACHE_NAME).then(cache=>cache.put(event.request,copy)).catch(()=>{});
         }
