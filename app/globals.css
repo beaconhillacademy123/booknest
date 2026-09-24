@@ -233,3 +233,16 @@ a{text-decoration:none;color:inherit}.sectionHead a,.back{display:flex;align-ite
 .shareBookButton{cursor:pointer}
 
 .readerComplete{margin:24px 0;padding:18px;border:1px solid #d9cfbd;border-radius:14px;background:color-mix(in srgb,var(--reader-bg) 88%,#b08a4a);display:flex;align-items:center;gap:12px;flex-wrap:wrap}.readerComplete strong{font-size:15px}.readerComplete span{color:var(--reader-muted);font-size:12px}.readerComplete a{margin-left:auto;font-size:12px;font-weight:800;text-decoration:underline}@media(max-width:600px){.readerComplete{display:block}.readerComplete span{display:block;margin-top:4px}.readerComplete a{display:inline-block;margin:10px 0 0}}
+
+.suggestionsPage{max-width:900px}
+.suggestionList{display:grid;gap:10px;margin-top:22px}
+.suggestionItem{display:grid;grid-template-columns:38px 1fr auto;gap:12px;align-items:center;padding:15px 16px;border:1px solid #ded8ce;border-radius:14px;background:#fff}
+.suggestionIcon{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;background:#f2eee7;color:#6d604f}
+.suggestionCopy h3{margin:0 0 4px;font-size:15px}
+.suggestionCopy p{margin:0;color:#777268;font-size:12px;line-height:1.5}
+.suggestionCopy small{display:block;margin-top:5px;color:#9a9388;font-size:11px}
+.suggestionStatus{padding:6px 9px;border-radius:999px;font-size:10px;font-weight:800;text-transform:capitalize}
+.suggestionStatus-pending{background:#f3eee3;color:#7a6339}
+.suggestionStatus-approved{background:#e8f3eb;color:#2f7043}
+.suggestionStatus-rejected{background:#f6e8e8;color:#8a3f3f}
+@media(max-width:600px){.suggestionItem{grid-template-columns:34px 1fr;align-items:start}.suggestionIcon{width:34px;height:34px}.suggestionStatus{grid-column:2;justify-self:start}.suggestionsPage .sectionHead{display:block}.suggestionsPage .sectionHead>.profileAction{display:inline-flex;margin-top:12px}}
