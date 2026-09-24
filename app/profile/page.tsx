@@ -65,7 +65,7 @@ export default function ProfilePage() {
           <div className="libraryStat"><strong>{stats.completed}</strong><span>Completed</span></div>
         </div>
         <div className="profileActions">
-          <Link className="profileAction" href="/library"><LibraryBig size={17}/> Open My Library</Link><Link className="profileAction" href="/bookmarks"><BookOpen size={17}/> My Bookmarks</Link>
+          <Link className="profileAction" href="/library"><LibraryBig size={17}/> Open My Library</Link><Link className="profileAction" href="/bookmarks"><BookOpen size={17}/> My Bookmarks</Link><Link className="profileAction" href="/my-suggestions"><BookOpen size={17}/> My Book Suggestions</Link>
           <Link className="profileAction" href="/"><UserRound size={17}/> Discover books</Link>
           <button className="profileAction profileDanger" onClick={logout} disabled={loggingOut}><LogOut size={17}/> {loggingOut ? "Logging out…" : "Log out"}</button>
         </div>
