@@ -97,7 +97,8 @@ export default function Reader({
     const savePosition = () => {
       const position = Math.round(window.scrollY);
       localStorage.setItem(storageKey, String(position));
-      localStorage.setItem(lastReaderKey, JSON.stringify({ chapter, position }));
+      localStorage.setItem(lastReaderKey, JSON.stringify({ chapter, position, title, author, coverUrl }));
+      localStorage.setItem('m-king-reads-last-book', JSON.stringify({ bookId, chapter, position, title, author, coverUrl }));
     };
 
     const updateProgress = () => {
