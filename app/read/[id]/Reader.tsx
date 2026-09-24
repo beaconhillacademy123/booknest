@@ -34,6 +34,7 @@ export default function Reader({
   const [fontSize, setFontSize] = useState(19);
   const [theme, setTheme] = useState<'light' | 'sepia' | 'dark'>('light');
   const [saved, setSaved] = useState(false);
+  const [bookmarkPosition, setBookmarkPosition] = useState(0);
   const [progress, setProgress] = useState(0);
   const [overallProgress, setOverallProgress] = useState(0);
   const [userId, setUserId] = useState<string | null>(null);
@@ -62,6 +63,8 @@ export default function Reader({
     const savedFont = Number(localStorage.getItem('booknest-font-size') || 19);
     const savedTheme = (localStorage.getItem('booknest-reader-theme') || 'light') as 'light' | 'sepia' | 'dark';
     const savedBookmark = localStorage.getItem(`booknest-bookmark-${bookId}`) === String(chapter);
+    const savedBookmarkPosition = Number(localStorage.getItem(`booknest-bookmark-position-${bookId}-${chapter}`) || 0);
+    setBookmarkPosition(Number.isFinite(savedBookmarkPosition) ? savedBookmarkPosition : 0);
     setFontSize(Math.min(26, Math.max(16, savedFont)));
     setTheme(savedTheme);
     setSaved(savedBookmark);
@@ -146,10 +149,14 @@ export default function Reader({
     const key = `booknest-bookmark-${bookId}`;
     if (saved) {
       localStorage.removeItem(key);
+      localStorage.removeItem(`booknest-bookmark-position-${bookId}-${chapter}`);
+      setBookmarkPosition(0);
       setSaved(false);
       if (userId) void supabase.from('booknest_bookmarks').delete().eq('user_id', userId).eq('book_id', bookId).eq('location', `chapter-${chapter}`);
     } else {
       localStorage.setItem(key, String(chapter));
+      localStorage.setItem(`booknest-bookmark-position-${bookId}-${chapter}`, String(Math.round(window.scrollY)));
+      setBookmarkPosition(Math.round(window.scrollY));
       setSaved(true);
       if (userId) void supabase.from('booknest_bookmarks').upsert({ user_id: userId, book_id: bookId, location: `chapter-${chapter}` });
     }
