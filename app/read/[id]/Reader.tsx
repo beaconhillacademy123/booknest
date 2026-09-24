@@ -111,12 +111,27 @@ export default function Reader({
       setOverallProgress(overall);
       savePosition();
       if (userId) {
-        void supabase.from('booknest_reading_progress').upsert({ user_id: userId, book_id: bookId, progress: Number(overall.toFixed(2)), chapter, position: Math.round(window.scrollY), updated_at: new Date().toISOString() });
+        void supabase.from('booknest_reading_progress').upsert({
+          user_id: userId, book_id: bookId, progress: Number(overall.toFixed(2)),
+          chapter, position: Math.round(window.scrollY), updated_at: new Date().toISOString()
+        });
       }
     };
 
+    const saveProgressNow = () => {
+      if (!userId) return;
+      const doc = document.documentElement;
+      const max = Math.max(1, doc.scrollHeight - window.innerHeight);
+      const pct = Math.min(100, Math.max(0, (window.scrollY / max) * 100));
+      const overall = Math.min(100, Math.max(0, ((chapter - 1) + (pct / 100)) / Math.max(1, chapterCount) * 100));
+      void supabase.from('booknest_reading_progress').upsert({
+        user_id: userId, book_id: bookId, progress: Number(overall.toFixed(2)),
+        chapter, position: Math.round(window.scrollY), updated_at: new Date().toISOString()
+      });
+    };
+
     const handleVisibility = () => {
-      if (document.visibilityState === 'hidden') savePosition();
+      if (document.visibilityState === 'hidden') { savePosition(); saveProgressNow(); }
     };
 
     window.addEventListener('scroll', updateProgress, { passive: true });
@@ -130,6 +145,8 @@ export default function Reader({
       window.removeEventListener('resize', updateProgress);
       window.removeEventListener('pagehide', savePosition);
       document.removeEventListener('visibilitychange', handleVisibility);
+      savePosition();
+      saveProgressNow();
       window.clearTimeout(timer);
     };
   }, [storageKey, lastReaderKey, content, userId, bookId, chapter]);
