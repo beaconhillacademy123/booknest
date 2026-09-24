@@ -98,10 +98,11 @@ export default async function ReadPage({
   searchParams
 }: {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ chapter?: string }>;
+  searchParams: Promise<{ chapter?: string; bookmark?: string }>;
 }) {
   const { id } = await params;
-  const { chapter: chapterParam } = await searchParams;
+  const { chapter: chapterParam, bookmark: bookmarkParam } = await searchParams;
+  const resumeBookmark = bookmarkParam === '1';
   const book = await getBook(id);
   if (!book) notFound();
 
@@ -135,6 +136,7 @@ export default async function ReadPage({
       chapterCount={1}
       chapterLabel="Full book"
       chapterItems={[{ number: 1, label: 'Full book', href: `/read/${id}` }]}
+      resumeBookmark={resumeBookmark}
       content={content}
       sourceUrl={book.source_url}
     />;
@@ -170,6 +172,7 @@ export default async function ReadPage({
     chapterCount={source.chapters.length}
     chapterLabel={chapterLabel(sourceId, file, chapter - 1)}
     chapterItems={chapterItems}
+    resumeBookmark={resumeBookmark}
     content={content}
     sourceUrl={book.source_url}
     prevHref={prevHref}
