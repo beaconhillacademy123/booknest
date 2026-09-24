@@ -310,3 +310,18 @@ a{text-decoration:none;color:inherit}.sectionHead a,.back{display:flex;align-ite
 .copyrightModalFinePrint{color:#898177;font-size:11px;line-height:1.5;margin:16px 0}
 .copyrightModalButton{width:100%;border:0;background:#17251d;color:#fff;border-radius:11px;padding:13px 16px;font-weight:800;cursor:pointer;margin-top:6px}
 @media(max-width:600px){.copyrightModalOverlay{padding:12px}.copyrightModal{padding:25px 20px;border-radius:18px;max-height:94vh}.copyrightModal h2{font-size:27px}.copyrightModalBody{font-size:12px;line-height:1.65}}
+
+.legalPage{max-width:900px;padding-top:34px;padding-bottom:80px}
+.legalHero{margin:28px 0 30px;max-width:760px}
+.legalIcon{width:54px;height:54px;border-radius:16px;background:#eee8dc;color:#6b522d;display:grid;place-items:center;margin-bottom:18px}
+.legalHero h1{font-family:Georgia,serif;font-size:clamp(34px,6vw,54px);line-height:1.03;margin:7px 0 14px}
+.legalHero p{font-size:16px;line-height:1.7;color:#6e6a62}
+.legalCard{border:1px solid #e1dbd1;background:#fff;border-radius:18px;padding:24px;margin-top:14px}
+.legalCard h2{font-family:Georgia,serif;font-size:22px;margin:0 0 10px}
+.legalCard p{color:#666158;line-height:1.7;font-size:13px;margin:8px 0}
+.legalSourceLink{display:inline-flex;align-items:center;gap:6px;margin-top:10px;font-weight:800;font-size:12px;color:#6b522d}
+.legalNotice{background:#f1ede6}
+.legalNotice strong{font-size:13px}
+.footerLinks{display:flex;gap:18px;flex-wrap:wrap;margin-top:10px}
+.footerLinks a{font-size:11px;color:#77736c;font-weight:700}
+@media(max-width:600px){.legalPage{padding-top:24px}.legalCard{padding:19px}.legalHero p{font-size:14px}.footerLinks{gap:12px}}
