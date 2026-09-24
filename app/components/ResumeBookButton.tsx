@@ -10,6 +10,7 @@ type Props = {
 
 export default function ResumeBookButton({ bookId }: Props) {
   const [resume, setResume] = useState<{ chapter: number; position: number } | null>(null);
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
     try {
@@ -26,10 +27,12 @@ export default function ResumeBookButton({ bookId }: Props) {
       }
     } catch {
       // Ignore malformed local reader state.
+    } finally {
+      setReady(true);
     }
   }, [bookId]);
 
-  if (!resume) return null;
+  if (!ready || !resume) return null;
 
   return (
     <Link className="secondary resumeBookButton" href={`/read/${bookId}?chapter=${resume.chapter}`}>
