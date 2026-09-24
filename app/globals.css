@@ -273,3 +273,12 @@ a{text-decoration:none;color:inherit}.sectionHead a,.back{display:flex;align-ite
 .freeBookSubjects p{color:#777268;line-height:1.7}
 @media(max-width:900px){.freeBookGrid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:600px){.freeBookGrid{grid-template-columns:repeat(2,minmax(0,1fr))}.freeBookHero{grid-template-columns:1fr;gap:20px}.freeBookLargeCover{width:min(210px,70vw);min-height:260px}.freeBookHero h1{font-size:32px}}
+
+.freeBookReaderNote{display:flex;flex-direction:column;gap:5px;margin-top:18px}
+.freeBookReaderNote strong{color:#66502e}
+.freeBookReaderNote span{line-height:1.55}
+.freeBookReaderBanner{position:fixed;top:0;left:0;right:0;z-index:40;height:42px;display:flex;align-items:center;justify-content:space-between;padding:0 4vw;background:#17251d;color:#fff;font-size:11px;border-bottom:1px solid #2d3b32}
+.freeBookReaderBanner a{display:flex;align-items:center;gap:5px;color:#fff;font-weight:800}
+.freeBookReaderBanner span{display:flex;align-items:center;gap:5px;color:#d8dfda}
+.freeBookReaderBanner~.reader{padding-top:42px}
+@media(max-width:650px){.freeBookReaderBanner{padding:0 16px}.freeBookReaderBanner span{font-size:0}.freeBookReaderBanner span svg{display:block}.freeBookReaderBanner~.reader{padding-top:42px}}
