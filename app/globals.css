@@ -298,3 +298,15 @@ a{text-decoration:none;color:inherit}.sectionHead a,.back{display:flex;align-ite
 .readerCopyrightNotice{max-width:900px;margin:28px auto 42px;padding:16px 20px;border-top:1px solid var(--reader-border);border-bottom:1px solid var(--reader-border);display:flex;flex-direction:column;gap:6px;color:var(--reader-muted);font-size:11px;line-height:1.6}
 .readerCopyrightNotice strong{color:var(--reader-text);font-size:12px}
 .readerCopyrightNotice a{font-weight:800;color:var(--reader-text);text-decoration:underline}
+
+.copyrightModalOverlay{position:fixed;inset:0;z-index:3000;background:#17140fcc;display:grid;place-items:center;padding:20px;backdrop-filter:blur(5px)}
+.copyrightModal{position:relative;width:min(680px,100%);max-height:min(90vh,760px);overflow:auto;background:#fff;border:1px solid #ded7cb;border-radius:22px;padding:32px;box-shadow:0 30px 90px #0006}
+.copyrightModalIcon{width:48px;height:48px;border-radius:14px;background:#eee8dc;color:#6b522d;display:grid;place-items:center;margin-bottom:18px}
+.copyrightModalClose{position:absolute;right:18px;top:18px;border:0;background:transparent;color:#777;cursor:pointer;padding:7px;border-radius:8px}
+.copyrightModalClose:hover{background:#f1ede6}
+.copyrightModal h2{font-family:Georgia,serif;font-size:clamp(25px,4vw,34px);line-height:1.1;margin:8px 0 18px;color:#211f1b;max-width:560px}
+.copyrightModalBody{color:#5f5b54;font-size:13px;line-height:1.7}
+.copyrightModalBody p{margin:0 0 12px}
+.copyrightModalFinePrint{color:#898177;font-size:11px;line-height:1.5;margin:16px 0}
+.copyrightModalButton{width:100%;border:0;background:#17251d;color:#fff;border-radius:11px;padding:13px 16px;font-weight:800;cursor:pointer;margin-top:6px}
+@media(max-width:600px){.copyrightModalOverlay{padding:12px}.copyrightModal{padding:25px 20px;border-radius:18px;max-height:94vh}.copyrightModal h2{font-size:27px}.copyrightModalBody{font-size:12px;line-height:1.65}}
