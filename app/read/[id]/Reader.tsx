@@ -154,7 +154,7 @@ export default function Reader({
       saveProgressNow();
       window.clearTimeout(timer);
     };
-  }, [storageKey, lastReaderKey, content, userId, bookId, chapter, canPersistToCloud]);
+  }, [storageKey, lastReaderKey, content, userId, bookId, chapter, canPersistToCloud, resumeHref, backHref]);
 
   const bodyClass = `reader reader-${theme}`;
 
