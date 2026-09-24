@@ -2,6 +2,7 @@ import "./globals.css";
 import Script from "next/script";
 import OfflineStatus from "./components/OfflineStatus";
 import InstallPrompt from "./components/InstallPrompt";
+import CopyrightNotice from "./components/CopyrightNotice";
 
 export const metadata = {
   title: "M King Reads",
@@ -12,5 +13,5 @@ export const metadata = {
 };
 
 export default function RootLayout({children}:{children:React.ReactNode}) {
-  return <html lang="en"><body><OfflineStatus /><InstallPrompt />{children}<Script id="pwa-register">{`if ('serviceWorker' in navigator) { window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => {})); }`}</Script></body></html>;
+  return <html lang="en"><body><OfflineStatus /><InstallPrompt /><CopyrightNotice />{children}<Script id="pwa-register">{`if ('serviceWorker' in navigator) { window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => {})); }`}</Script></body></html>;
 }
