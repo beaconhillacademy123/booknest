@@ -285,3 +285,8 @@ a{text-decoration:none;color:inherit}.sectionHead a,.back{display:flex;align-ite
 
 .freeBookReaderBanner~.reader .readerTopbar{top:42px}
 .freeBookReaderBanner~.reader .readerProgress{top:42px}
+
+.readerContentsSearch{display:flex;align-items:center;gap:7px;border:1px solid var(--reader-border);border-radius:9px;padding:8px 9px;margin:0 0 10px;background:transparent;color:var(--reader-muted);flex:0 0 auto}
+.readerContentsSearch input{min-width:0;width:100%;border:0;outline:0;background:transparent;color:var(--reader-text);font-size:12px}
+.readerContentsSearch input::placeholder{color:var(--reader-muted)}
+.readerContentsEmpty{font-size:12px;color:var(--reader-muted);padding:14px 8px;text-align:center}
