@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Bookmark, ChevronLeft, ChevronRight, Home, List, Settings2 } from 'lucide-react';
 import { supabase } from '../../../lib/supabase-browser';
+import ShareReaderButton from '../../components/ShareReaderButton';
 
 type ChapterItem = {
   number: number;
@@ -183,6 +184,7 @@ export default function Reader({
           <button onClick={() => setShowContents(v => !v)} aria-label="Table of contents" title="Table of contents"><List size={18}/></button>
           <button onClick={() => setShowSettings(v => !v)} aria-label="Reader settings" title="Reader settings"><Settings2 size={18}/></button>
           <button className={saved ? 'readerSaved' : ''} onClick={toggleBookmark} aria-label="Bookmark chapter" title="Bookmark chapter"><Bookmark size={18} fill={saved ? 'currentColor' : 'none'}/></button>
+          <ShareReaderButton title={title} chapter={chapter} />
         </div>
       </header>
 
