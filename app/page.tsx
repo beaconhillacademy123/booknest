@@ -23,7 +23,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ q
   return <main><ContinueReading />
     <header className="topbar">
       <Link href="/" className="brand"><div className="logo"><BookOpen size={22}/></div><span>M King Reads</span></Link>
-      <nav><Link className="active" href="/">Home</Link><Link href="/#genres">Genres</Link><Link href="/library">My Library</Link></nav>
+      <nav><Link className="active" href="/">Home</Link><Link href="/free-books">Free Books</Link><Link href="/#genres">Genres</Link><Link href="/library">My Library</Link></nav>
       <Link href="/login" className="login">Log in</Link>
     </header>
 
