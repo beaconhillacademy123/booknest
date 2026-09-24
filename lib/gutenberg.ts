@@ -66,13 +66,32 @@ export function splitGutenbergHtml(html: string): GutenbergChapter[] {
 
   let boundaries = explicit;
   if (boundaries.length < 2) {
-    const fallback = matches.filter(item => fallbackHeading(item.label, item.tag));
-    const counts = new Map<string, number>();
-    for (const item of fallback) counts.set(item.tag, (counts.get(item.tag) || 0) + 1);
-    const repeatedTag = Array.from(counts.entries()).sort((a, b) => b[1] - a[1])[0]?.[0];
-    boundaries = repeatedTag
-      ? fallback.filter(item => item.tag === repeatedTag)
-      : fallback;
+    // Some older Gutenberg editions use paragraph/span blocks instead of h-tags.
+    const blockPattern = /<(p|div|span)([^>]*)>([\\s\\S]*?)<\\/\\1>/gi;
+    const blockCandidates: Array<{ tag: string; attrs: string; label: string; start: number; end: number }> = [];
+    let block: RegExpExecArray | null;
+    while ((block = blockPattern.exec(html)) !== null) {
+      const label = decodeHeadingText(block[3]);
+      if (!label || isNavigationHeading(label, block[2])) continue;
+      if (isChapterHeading(label) && (/(chapter|section|part|book|volume)/i.test(block[2]) || label.length <= 90)) {
+        blockCandidates.push({
+          tag: block[1].toLowerCase(),
+          attrs: block[2],
+          label,
+          start: block.index,
+          end: blockPattern.lastIndex,
+        });
+      }
+    }
+    boundaries = blockCandidates.length >= 2 ? blockCandidates : matches.filter(item => fallbackHeading(item.label, item.tag));
+  }
+
+  if (boundaries.length >= 2) {
+    // Remove duplicate markers that can occur when an h-tag sits inside a
+    // chapter paragraph/div. Keep the earliest marker at each position.
+    boundaries = boundaries
+      .sort((a, b) => a.start - b.start)
+      .filter((item, index, list) => index === 0 || item.start !== list[index - 1].start);
   }
 
   if (boundaries.length < 2) {
