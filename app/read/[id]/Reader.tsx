@@ -29,10 +29,11 @@ type Props = {
   backHref?: string;
   persistToCloud?: boolean;
   sourceLabel?: string;
+  resumeHref?: string;
 };
 
 export default function Reader({
-  bookId, title, author, coverUrl, chapter, chapterCount, content, sourceUrl, chapterLabel, chapterItems, resumeBookmark = false, nextHref, prevHref, backHref, persistToCloud = true, sourceLabel = 'View source'
+  bookId, title, author, coverUrl, chapter, chapterCount, content, sourceUrl, chapterLabel, chapterItems, resumeBookmark = false, nextHref, prevHref, backHref, persistToCloud = true, sourceLabel = 'View source', resumeHref
 }: Props) {
   const storageKey = `booknest-progress-${bookId}-${chapter}`;
   const lastReaderKey = `booknest-last-reader-${bookId}`;
@@ -103,7 +104,7 @@ export default function Reader({
       const position = Math.round(window.scrollY);
       localStorage.setItem(storageKey, String(position));
       localStorage.setItem(lastReaderKey, JSON.stringify({ chapter, position, title, author, coverUrl }));
-      localStorage.setItem('m-king-reads-last-book', JSON.stringify({ bookId, chapter, position, title, author, coverUrl }));
+      localStorage.setItem('m-king-reads-last-book', JSON.stringify({ bookId, chapter, position, title, author, coverUrl, resumeHref: resumeHref || ((backHref || `/read/${bookId}`) + (chapter > 1 ? `?chapter=${chapter}` : '')) }));
     };
 
     const updateProgress = () => {
