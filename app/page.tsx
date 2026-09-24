@@ -83,7 +83,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ q
       </div>
     </section>
 
-    <footer><div className="brand"><div className="logo"><BookOpen size={19}/></div><span>M King Reads</span></div><p>A growing digital library for curious minds.</p></footer>
+    <footer><div><div className="brand"><div className="logo"><BookOpen size={19}/></div><span>M King Reads</span></div><p>A growing digital library for curious minds.</p></div><div className="footerLinks"><Link href="/copyright">Copyright &amp; Sources</Link><Link href="/free-books">Free Books</Link><Link href="/login">My Library</Link></div></footer>
   </main>
 }
 
