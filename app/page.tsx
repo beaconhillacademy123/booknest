@@ -76,6 +76,22 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ q
       <div className="books booksNew">{otherBooks.map(b=><BookCard key={b.id} book={b}/>)}</div>
     </section>}
 
+    {!q && <section className="section freeBooksFeature">
+      <div className="freeBooksFeatureCard">
+        <div className="freeBooksFeatureArt">
+          <div className="freeBooksFeatureBook">M</div>
+          <div className="freeBooksFeatureBook">K</div>
+          <div className="freeBooksFeatureBook">R</div>
+        </div>
+        <div className="freeBooksFeatureCopy">
+          <span className="sectionKicker">OPEN COLLECTION</span>
+          <h2>Thousands of books. One place to read.</h2>
+          <p>Explore a live collection from Project Gutenberg and read available editions directly inside M King Reads.</p>
+          <Link className="bannerButton" href="/free-books">Explore Free Books <ChevronRight size={17}/></Link>
+        </div>
+      </div>
+    </section>}
+
     <section className="section ctaSection">
       <div className="ctaBox">
         <div><span className="sectionKicker">YOUR PERSONAL SHELF</span><h2>Save books now. Come back anytime.</h2><p>Create a free account to build your own library and keep track of your reading.</p></div>
