@@ -325,3 +325,32 @@ a{text-decoration:none;color:inherit}.sectionHead a,.back{display:flex;align-ite
 .footerLinks{display:flex;gap:18px;flex-wrap:wrap;margin-top:10px}
 .footerLinks a{font-size:11px;color:#77736c;font-weight:700}
 @media(max-width:600px){.legalPage{padding-top:24px}.legalCard{padding:19px}.legalHero p{font-size:14px}.footerLinks{gap:12px}}
+
+.freeBooksFeature{padding-top:10px}
+.freeBooksFeatureCard{display:grid;grid-template-columns:330px 1fr;min-height:260px;border-radius:24px;overflow:hidden;background:#17251d;color:#fff}
+.freeBooksFeatureArt{position:relative;display:flex;align-items:center;justify-content:center;gap:0;background:#26372c;overflow:hidden}
+.freeBooksFeatureArt:before,.freeBooksFeatureArt:after{content:"";position:absolute;border-radius:50%;border:1px solid #ffffff20}
+.freeBooksFeatureArt:before{width:280px;height:280px}.freeBooksFeatureArt:after{width:190px;height:190px}
+.freeBooksFeatureBook{width:82px;height:122px;border-radius:5px;display:grid;place-items:center;font-family:Georgia,serif;font-size:32px;font-weight:800;background:#f0e6d1;color:#17251d;border:4px solid #d2c3a5;box-shadow:0 15px 30px #0004;z-index:1;margin:0 -7px}
+.freeBooksFeatureBook:nth-child(2){transform:translateY(-18px) rotate(4deg);background:#f4c95d}
+.freeBooksFeatureBook:nth-child(3){transform:rotate(-5deg)}
+.freeBooksFeatureCopy{padding:38px 42px;display:flex;flex-direction:column;align-items:flex-start;justify-content:center}
+.freeBooksFeatureCopy h2{font-family:Georgia,serif;font-size:34px;line-height:1.08;margin:5px 0 10px;max-width:540px}
+.freeBooksFeatureCopy p{color:#cbd2cd;line-height:1.65;max-width:570px;margin:0 0 18px;font-size:14px}
+@media(max-width:850px){.freeBooksFeatureCard{grid-template-columns:240px 1fr}.freeBooksFeatureCopy{padding:28px}.freeBooksFeatureCopy h2{font-size:29px}}
+@media(max-width:650px){.freeBooksFeatureCard{grid-template-columns:1fr}.freeBooksFeatureArt{min-height:150px}.freeBooksFeatureBook{width:62px;height:92px;font-size:24px}.freeBooksFeatureCopy{padding:25px 22px}.freeBooksFeatureCopy h2{font-size:27px}}
+
+@media(max-width:700px){
+  .topbar{height:auto;min-height:64px;padding:9px 14px;gap:10px}
+  .topbar .brand{font-size:16px;gap:7px;flex:0 0 auto}
+  .topbar .logo{width:34px;height:34px;border-radius:10px}
+  .topbar nav{flex:1;min-width:0;gap:16px;overflow-x:auto;white-space:nowrap;scrollbar-width:none;padding:4px 0}
+  .topbar nav::-webkit-scrollbar{display:none}
+  .topbar nav a{font-size:11px;flex:0 0 auto}
+  .topbar .login{font-size:11px;padding:8px 10px;flex:0 0 auto}
+}
+@media(max-width:430px){
+  .topbar nav{gap:13px}
+  .topbar nav a{font-size:10px}
+  .topbar .login{padding:7px 9px}
+}
