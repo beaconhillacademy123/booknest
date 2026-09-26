@@ -99,7 +99,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ q
         <div className="howCard"><span className="howNumber">02</span><Bookmark size={24}/><h3>Save</h3><p>Keep books on your personal shelf and build a library that belongs to you.</p></div>
         <div className="howCard"><span className="howNumber">03</span><LibraryBig size={24}/><h3>Keep reading</h3><p>Use the built-in reader, bookmarks and saved progress to return where you stopped.</p></div>
       </div>
-    </section>
+    </section>}
 
     <section className="section ctaSection">
       <div className="ctaBox">
