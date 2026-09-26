@@ -354,3 +354,13 @@ a{text-decoration:none;color:inherit}.sectionHead a,.back{display:flex;align-ite
   .topbar nav a{font-size:10px}
   .topbar .login{padding:7px 9px}
 }
+
+.howSection{padding-top:8px}
+.howGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.howCard{position:relative;border:1px solid #e4dfd6;border-radius:20px;background:#fff;padding:28px;min-height:210px;overflow:hidden}
+.howCard:after{content:"";position:absolute;width:100px;height:100px;border-radius:50%;right:-45px;bottom:-45px;background:#f4efe6}
+.howCard svg{color:#6b522d;margin-top:12px}
+.howNumber{position:absolute;right:20px;top:18px;font-size:11px;font-weight:900;letter-spacing:.12em;color:#aaa39a}
+.howCard h3{font-family:Georgia,serif;font-size:22px;margin:16px 0 7px}
+.howCard p{font-size:13px;line-height:1.65;color:#77736c;max-width:280px;margin:0}
+@media(max-width:700px){.howGrid{grid-template-columns:1fr}.howCard{min-height:0;padding:22px}.howCard h3{margin-top:12px}}
