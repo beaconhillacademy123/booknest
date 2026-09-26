@@ -367,3 +367,6 @@ a{text-decoration:none;color:inherit}.sectionHead a,.back{display:flex;align-ite
 
 .detailCoverWrap{display:flex;flex-direction:column;align-items:center;gap:10px}
 .detailCoverCaption{font-size:9px;letter-spacing:.14em;font-weight:900;color:#999188}
+
+
+.continueReading{position:relative;padding-right:48px}.continueReadingDismiss{position:absolute;top:7px;right:7px;width:24px;height:24px;border:0;border-radius:50%;background:transparent;color:#8b857c;display:grid;place-items:center;cursor:pointer;padding:0}.continueReadingDismiss:hover{background:#f1ede6;color:#403b34}.continueReadingDismiss:focus-visible{outline:2px solid #a8782e;outline-offset:2px}@media(max-width:600px){.continueReading{padding-right:40px}.continueReadingDismiss{top:5px;right:5px;width:22px;height:22px}.continueReadingDismiss svg{width:13px;height:13px}}
