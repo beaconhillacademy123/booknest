@@ -364,3 +364,6 @@ a{text-decoration:none;color:inherit}.sectionHead a,.back{display:flex;align-ite
 .howCard h3{font-family:Georgia,serif;font-size:22px;margin:16px 0 7px}
 .howCard p{font-size:13px;line-height:1.65;color:#77736c;max-width:280px;margin:0}
 @media(max-width:700px){.howGrid{grid-template-columns:1fr}.howCard{min-height:0;padding:22px}.howCard h3{margin-top:12px}}
+
+.detailCoverWrap{display:flex;flex-direction:column;align-items:center;gap:10px}
+.detailCoverCaption{font-size:9px;letter-spacing:.14em;font-weight:900;color:#999188}
