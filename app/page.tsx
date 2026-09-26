@@ -92,6 +92,15 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ q
       </div>
     </section>}
 
+    {!q && <section className="section howSection">
+      <div className="sectionHead"><div><span className="sectionKicker">HOW IT WORKS</span><h2>Made for reading, not searching.</h2><p>Everything you need to discover a book and keep your place.</p></div></div>
+      <div className="howGrid">
+        <div className="howCard"><span className="howNumber">01</span><BookOpen size={24}/><h3>Discover</h3><p>Browse genres, search the catalogue or explore the growing free collection.</p></div>
+        <div className="howCard"><span className="howNumber">02</span><Bookmark size={24}/><h3>Save</h3><p>Keep books on your personal shelf and build a library that belongs to you.</p></div>
+        <div className="howCard"><span className="howNumber">03</span><LibraryBig size={24}/><h3>Keep reading</h3><p>Use the built-in reader, bookmarks and saved progress to return where you stopped.</p></div>
+      </div>
+    </section>
+
     <section className="section ctaSection">
       <div className="ctaBox">
         <div><span className="sectionKicker">YOUR PERSONAL SHELF</span><h2>Save books now. Come back anytime.</h2><p>Create a free account to build your own library and keep track of your reading.</p></div>
