@@ -92,14 +92,14 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ q
       </div>
     </section>}
 
-    {!q && <section className="section howSection">
+    <section className="section howSection" data-section="how-it-works">
       <div className="sectionHead"><div><span className="sectionKicker">HOW IT WORKS</span><h2>Made for reading, not searching.</h2><p>Everything you need to discover a book and keep your place.</p></div></div>
       <div className="howGrid">
         <div className="howCard"><span className="howNumber">01</span><BookOpen size={24}/><h3>Discover</h3><p>Browse genres, search the catalogue or explore the growing free collection.</p></div>
         <div className="howCard"><span className="howNumber">02</span><Bookmark size={24}/><h3>Save</h3><p>Keep books on your personal shelf and build a library that belongs to you.</p></div>
         <div className="howCard"><span className="howNumber">03</span><LibraryBig size={24}/><h3>Keep reading</h3><p>Use the built-in reader, bookmarks and saved progress to return where you stopped.</p></div>
       </div>
-    </section>}
+    </section>
 
     <section className="section ctaSection">
       <div className="ctaBox">
