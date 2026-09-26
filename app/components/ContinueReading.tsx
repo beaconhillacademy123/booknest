@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { BookOpen, ChevronRight } from 'lucide-react';
+import { BookOpen, ChevronRight, X } from 'lucide-react';
 
 type LastBook = {
   bookId: string;
@@ -14,11 +14,14 @@ type LastBook = {
   resumeHref?: string;
 };
 
+const DISMISSED_KEY = 'm-king-reads-dismiss-continue-reading';
+
 export default function ContinueReading() {
   const [book, setBook] = useState<LastBook | null>(null);
 
   useEffect(() => {
     try {
+      if (localStorage.getItem(DISMISSED_KEY) === '1') return;
       const raw = localStorage.getItem('m-king-reads-last-book');
       if (!raw) return;
       const parsed = JSON.parse(raw);
@@ -36,10 +39,26 @@ export default function ContinueReading() {
     } catch {}
   }, []);
 
+  const dismiss = () => {
+    try {
+      localStorage.setItem(DISMISSED_KEY, '1');
+    } catch {}
+    setBook(null);
+  };
+
   if (!book) return null;
 
   return (
     <section className="continueReading">
+      <button
+        type="button"
+        className="continueReadingDismiss"
+        onClick={dismiss}
+        aria-label="Dismiss continue reading"
+        title="Dismiss"
+      >
+        <X size={14} />
+      </button>
       <div className="continueReadingCover">
         {book.coverUrl ? <img src={book.coverUrl} alt="" /> : <BookOpen size={28} />}
       </div>
